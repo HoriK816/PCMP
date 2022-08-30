@@ -10,7 +10,8 @@ class Music:
 
     def __init__(self, name):
         self.file_name =  name
-    
+        self.is_playing = False 
+
     def play(self,play_setting) -> (str,int):
         self.setting = play_setting
         pygame.mixer.init(int(44100*self.setting.play_speed)) #fix it!
