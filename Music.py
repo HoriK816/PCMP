@@ -8,11 +8,16 @@ class Music:
     playback_time:time
     is_playing:bool
 
-    def __init__(self, name) -> None:
+    def __init__(self, name):
         self.file_name =  name
     
     def play(self) -> (str,int):
-        pygame.mixer.music.load("sunrise.mp3")
+        # refer to PlaySetting class and
+        # do settings to play music in this area
+
+        # I don't know how to change the playback speed with pygame ...
+        pygame.mixer.init(44100)
+        pygame.mixer.music.load("materials/sunrise-114326.mp3")
         pygame.mixer.music.play(1)
         self.is_playing = True    
 
@@ -21,7 +26,6 @@ class Music:
         self.is_playing = False
 
 if __name__ == "__main__":
-    pygame.init()
     tmp_music = Music("materials/sunrise-114326.mp3")
     tmp_music.play()
         
