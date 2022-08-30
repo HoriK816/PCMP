@@ -3,7 +3,7 @@ class SystemSetting:
     sort_order : str
     sort_order_candidate = ["alphabetical"]
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.search_path = "./materials/" #for test
         self.sort_order = self.sort_order_candidate[0] #default
 
