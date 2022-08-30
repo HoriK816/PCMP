@@ -1,22 +1,22 @@
-import playsound
 import pygame
 import time 
+from PlaySetting import PlaySetting
 
 class Music:
     file_name:str
     artist:str
     playback_time:time
     is_playing:bool
+    setting:PlaySetting
 
     def __init__(self, name):
         self.file_name =  name
     
-    def play(self) -> (str,int):
-        # refer to PlaySetting class and
-        # do settings to play music in this area
+    def play(self,play_setting) -> (str,int):
+        self.setting = play_setting
 
-        # I don't know how to change the playback speed with pygame ...
-        pygame.mixer.init(44100)
+        pygame.mixer.init(int(44100*self.setting.play_speed)) #fix it!
+        pygame.mixer.music.set_volume(self.setting.play_volume)
         pygame.mixer.music.load("materials/sunrise-114326.mp3")
         pygame.mixer.music.play(1)
         self.is_playing = True    
@@ -26,8 +26,10 @@ class Music:
         self.is_playing = False
 
 if __name__ == "__main__":
+    tmp_setting = PlaySetting()
+
     tmp_music = Music("materials/sunrise-114326.mp3")
-    tmp_music.play()
+    tmp_music.play(tmp_setting)
         
     counter = 0
     while(tmp_music.is_playing):
