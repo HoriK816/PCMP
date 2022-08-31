@@ -1,9 +1,9 @@
 class MusicList:
 
-    music_list:list
-    
-    def __init__(self, search_dir:str) -> None:
-       pass 
+    music_list:list 
+
+    def __init__(self) -> None:
+        self.music_list = []
 
     def skip_song(self,num):
         #search name         
