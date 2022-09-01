@@ -8,18 +8,65 @@ from SystemSetting import SystemSetting
 
 class MusicPlayer:
     key_input : str
+    all_songs : AllSongsList
+    play_info : Music
+    play_index : int #consider it !!
 
     def __init__(self):
         self.system_setting = SystemSetting()
         self.all_songs = AllSongsList(self.system_setting.search_path)
+        self.play_info = None
+        #print(self.all_songs.music_list)  
+        self.skip_direction = True # for test 
 
     def play_title(self,title:str) -> None :
         for i in range(len(self.all_songs.music_list)):
-            print(self.all_songs.music_list[i])
-        self.key_input = input() 
-         
+            if(title ==  self.all_songs.music_list[i]):
+                self.play_info = Music(title)
+                self.play_index = i 
+                print("index=" + str(i))
+                print(self.play_info.file_name)
+
+    def skip_song(self,direction:bool) -> None:
+
+        if(direction):
+            ret_val = self.all_songs.skip_song_to_next(self.play_index)
+            self.play_index = ret_val[0] 
+            self.play_info = ret_val[1]
+
+            print("skip the song!")
+            print("index=" + str(self.play_index))
+            print(self.play_info.file_name)
+
+        else:
+            ret_val = self.all_songs.skip_song_to_previous(self.play_index)
+            self.play_index = ret_val[0]
+            self.play_info = ret_val[1]
+            print("skip the song!")
+            print("index=" + str(self.play_index))
+            print(self.play_info.file_name)
+
+    def move_5seconds(self,direction:int) -> None:
+        pass
+
+    def volume_control(self,up_or_down:int) -> None:
+        pass
+
+    def change_dir(self,new_path:str) -> None:
+        pass
+
+    def change_sort_method(self) -> None:
+        pass
+
+    def main(self) -> None: # main loop
+        pass
 
 if __name__ == "__main__":
     player = MusicPlayer()
-    player.play_title("materials/music_for_programming_1-datassette.mp3")
-
+    player.play_title("kibou.mp3")
+    player.skip_song(False)
+    player.skip_song(False)
+    player.skip_song(False)
+    player.skip_song(False)
+    player.skip_song(False)
+ 
