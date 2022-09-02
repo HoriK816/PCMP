@@ -10,8 +10,8 @@ class PlaySetting:
         self.play_speed = speed
 
     def change_volume(self, volume:float) -> None:
-        self.play_volume = volume 
-     
+        self.play_volume = volume        
+
 if __name__ == "__main__":
     play_setting = PlaySetting()
     print(play_setting.play_speed)

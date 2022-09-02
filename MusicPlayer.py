@@ -35,8 +35,6 @@ class MusicPlayer:
                     time.sleep(1)
                     counter += 1
 
-
-
     def skip_song(self,direction:bool) -> None:
 
         if(direction):
@@ -63,24 +61,67 @@ class MusicPlayer:
         pass
 
     def volume_control(self,direction:bool) -> None:
-        pass
+        new_volume = self.play_setting.play_volume 
+
+        if(direction): #up
+            new_volume += 0.2
+            if(new_volume <= 1.0):
+                new_volume = round(new_volume,1)
+                self.play_setting.change_volume(new_volume) 
+            else:
+                self.play_setting.change_volume(1.0)
+        else: #down
+            new_volume -= 0.2
+            if(new_volume >= 0.0):
+                new_volume = round(new_volume,1)
+                self.play_setting.change_volume(new_volume)
+            else:
+                self.play_setting.change_volume(0.0)
 
     def change_dir(self,new_path:str) -> None:
         new_dir = input()
         system_setting.change_search_path(new_dir)
 
     def change_sort_method(self) -> None:
-        pass
+        pass            
 
     def main(self) -> None: # main loop
         pass
 
 if __name__ == "__main__":
     player = MusicPlayer()
+    '''
+    print(player.play_setting.play_volume)
+    player.volume_control(True)
+    print(player.play_setting.play_volume)
+    player.volume_control(True)
+    print(player.play_setting.play_volume)
+    player.volume_control(True)
+    print(player.play_setting.play_volume)
+    player.volume_control(True)
+    print(player.play_setting.play_volume)
+    player.volume_control(True)
+    print(player.play_setting.play_volume)
+    player.volume_control(True)
+    print(player.play_setting.play_volume)
+    player.volume_control(False)
+    print(player.play_setting.play_volume)
+    player.volume_control(False)
+    print(player.play_setting.play_volume)
+    player.volume_control(False)
+    print(player.play_setting.play_volume)
+    player.volume_control(False)
+    print(player.play_setting.play_volume)
+    player.volume_control(False)
+    print(player.play_setting.play_volume)
+    player.volume_control(False)
+    print(player.play_setting.play_volume)
+    ''' 
+    '''
     player.play_title("kibou.mp3")
     player.skip_song(False)
     player.skip_song(False)
     player.skip_song(False)
     player.skip_song(False)
     player.skip_song(False)
- 
+    ''' 
