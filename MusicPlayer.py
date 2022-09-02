@@ -5,6 +5,7 @@ from PlaySetting import PlaySetting
 from MusicList import MusicList
 from AllSongsList import AllSongsList
 from SystemSetting import SystemSetting
+from PlayList import PlayList
 
 class MusicPlayer:
     key_input : str
@@ -13,6 +14,8 @@ class MusicPlayer:
     play_index : int #consider it !!
     play_setting : PlaySetting
     system_setting : SystemSetting
+    list_of_playlist : list
+    playlist_name : str
 
     def __init__(self):
         self.system_setting = SystemSetting()
@@ -20,7 +23,10 @@ class MusicPlayer:
         self.play_info = None
         self.play_setting = PlaySetting()
         #print(self.all_songs.music_list)  
+
         self.skip_direction = True # for test 
+        self.list_of_playlist = [] #for test
+        self.list_of_playlist.append(PlayList("test_list")) #for test
 
     def play_title(self,title:str) -> None :
         for i in range(len(self.all_songs.music_list)):
@@ -86,12 +92,33 @@ class MusicPlayer:
     def change_sort_method(self) -> None:
         pass            
 
+    def play_playlist(self) -> None:
+        self.list_of_playlist[0].load_playlist("test_list.csv") #for test
+        print(self.list_of_playlist[0].music_list)
+
+        for i in range(len(self.list_of_playlist[0].music_list)):
+            self.play_title(self.list_of_playlist[0].music_list[i])
+
     def main(self) -> None: # main loop
         pass
 
+'''
+    tmp_line:str
+    files = os.listdir("playlist/")
+
+    for i in range(len(files)):
+        tmp_lines = files[i].split(".")
+        if(tmp_line[1] == "csv"):
+            self.list_of_playlist[i]
+
+
+'''
+
 if __name__ == "__main__":
     player = MusicPlayer()
-    print(player.all_songs.music_list)
+    player.play_playlist()
+    '''
+    #print(player.all_songs.music_list)
     exit_flag = False
     #for test
     while(True):
@@ -100,6 +127,7 @@ if __name__ == "__main__":
         print(" sp : skip to previous")
         print(" vu : volume up")
         print(" vd : volume down")
+        print("voluem = " + str(player.play_setting.play_volume))
         select = input()
         if(select == "sn"):
             player.skip_song(True) 
@@ -112,4 +140,4 @@ if __name__ == "__main__":
         else:
             number = int(select)
             player.play_title(player.all_songs.music_list[number])
-
+    '''
