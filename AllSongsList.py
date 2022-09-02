@@ -16,7 +16,7 @@ class AllSongsList(MusicList):
                     or tmp_line[1] == "ogg"):
                 self.music_list.append(files[i])
 
-
+    #is this method necessary??
     def seach_title(self, title:str) -> Music:
         pass
 

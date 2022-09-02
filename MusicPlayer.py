@@ -28,13 +28,14 @@ class MusicPlayer:
                 self.play_info = Music("materials/"+title)
                 self.play_index = i 
                
-                #for test
+                #for test of skip_song method
                 self.play_info.play(self.play_setting)  
                 counter = 0
                 while(counter < 5):
                     time.sleep(1)
                     counter += 1
-
+                self.play_info.stop()  
+ 
     def skip_song(self,direction:bool) -> None:
 
         if(direction):
@@ -90,38 +91,25 @@ class MusicPlayer:
 
 if __name__ == "__main__":
     player = MusicPlayer()
-    '''
-    print(player.play_setting.play_volume)
-    player.volume_control(True)
-    print(player.play_setting.play_volume)
-    player.volume_control(True)
-    print(player.play_setting.play_volume)
-    player.volume_control(True)
-    print(player.play_setting.play_volume)
-    player.volume_control(True)
-    print(player.play_setting.play_volume)
-    player.volume_control(True)
-    print(player.play_setting.play_volume)
-    player.volume_control(True)
-    print(player.play_setting.play_volume)
-    player.volume_control(False)
-    print(player.play_setting.play_volume)
-    player.volume_control(False)
-    print(player.play_setting.play_volume)
-    player.volume_control(False)
-    print(player.play_setting.play_volume)
-    player.volume_control(False)
-    print(player.play_setting.play_volume)
-    player.volume_control(False)
-    print(player.play_setting.play_volume)
-    player.volume_control(False)
-    print(player.play_setting.play_volume)
-    ''' 
-    '''
-    player.play_title("kibou.mp3")
-    player.skip_song(False)
-    player.skip_song(False)
-    player.skip_song(False)
-    player.skip_song(False)
-    player.skip_song(False)
-    ''' 
+    print(player.all_songs.music_list)
+    exit_flag = False
+    #for test
+    while(True):
+        print("1-10 : select songs")
+        print(" sn : skip to next")
+        print(" sp : skip to previous")
+        print(" vu : volume up")
+        print(" vd : volume down")
+        select = input()
+        if(select == "sn"):
+            player.skip_song(True) 
+        elif(select == "sp"):
+            player.skip_song(False) 
+        elif(select == "vu"):
+            player.volume_control(True)
+        elif(select == "vd"):
+            player.volume_control(False)
+        else:
+            number = int(select)
+            player.play_title(player.all_songs.music_list[number])
+
