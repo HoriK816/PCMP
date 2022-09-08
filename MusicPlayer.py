@@ -29,6 +29,8 @@ class MusicPlayer:
         self.list_of_playlist.append(PlayList("test_list")) #for test
 
     def play_title(self,title:str) -> None :
+        """ play the music that the name was given """
+
         for i in range(len(self.all_songs.music_list)):
             if(title ==  self.all_songs.music_list[i]):
                 self.play_info = Music("materials/"+title)
@@ -43,6 +45,7 @@ class MusicPlayer:
                 self.play_info.stop()  
  
     def skip_song(self,direction:bool) -> None:
+        """ skip to next song or previous song """ 
 
         if(direction):
             ret_val = self.all_songs.skip_song_to_next(self.play_index)
@@ -115,9 +118,11 @@ class MusicPlayer:
 '''
 
 if __name__ == "__main__":
+
+    '''
+    #test for playlist
     player = MusicPlayer()
     player.play_playlist()
-    '''
     #print(player.all_songs.music_list)
     exit_flag = False
     #for test
