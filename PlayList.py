@@ -13,10 +13,6 @@ class PlayList(MusicList):
         with open("playlist/"+file_name,"r") as f:
             for line in f:
                 self.music_list.append(line.split(",")[0])
-        '''
-        for i in range(len(self.music_list)):
-            print(self.music_list[i])
-        '''
 
     def edit_playList(self, name:str, ope:str, title:str) -> None:
         pass

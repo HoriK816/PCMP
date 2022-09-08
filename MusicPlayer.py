@@ -1,4 +1,5 @@
 import pygame
+import os
 import time 
 from Music import Music
 from PlaySetting import PlaySetting
@@ -14,19 +15,27 @@ class MusicPlayer:
     play_index : int #consider it !!
     play_setting : PlaySetting
     system_setting : SystemSetting
-    list_of_playlist : list
+    all_playlist : list
     playlist_name : str
 
     def __init__(self):
-        self.system_setting = SystemSetting()
-        self.all_songs = AllSongsList(self.system_setting.search_path)
-        self.play_info = None
-        self.play_setting = PlaySetting()
-        #print(self.all_songs.music_list)  
 
+        #setting 
+        self.system_setting = SystemSetting()
+        self.play_setting = PlaySetting()
         self.skip_direction = True # for test 
-        self.list_of_playlist = [] #for test
-        self.list_of_playlist.append(PlayList("test_list")) #for test
+
+        #music all song 
+        self.all_songs = AllSongsList(self.system_setting.search_path)
+
+        #load all playlist
+        self.all_playlist = []
+        self.load_all_playlist("playlist/")
+
+        #self.list_of_playlist.append(PlayList("test_list")) #for test
+
+        #information about the song
+        self.play_info = None
 
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
@@ -71,6 +80,8 @@ class MusicPlayer:
         pass
 
     def volume_control(self,direction:bool) -> None:
+        """ to control volume """ 
+
         new_volume = self.play_setting.play_volume 
 
         if(direction): #up
@@ -95,29 +106,37 @@ class MusicPlayer:
     def change_sort_method(self) -> None:
         pass            
 
-    def play_playlist(self) -> None:
+    def play_playlist(self, name) -> None:
+        '''
+        
+        # rewrite this part.
+
+
         self.list_of_playlist[0].load_playlist("test_list.csv") #for test
         print(self.list_of_playlist[0].music_list)
 
         for i in range(len(self.list_of_playlist[0].music_list)):
             self.play_title(self.list_of_playlist[0].music_list[i])
 
+        '''
     def main(self) -> None: # main loop
         pass
 
-'''
-    tmp_line:str
-    files = os.listdir("playlist/")
 
-    for i in range(len(files)):
-        tmp_lines = files[i].split(".")
-        if(tmp_line[1] == "csv"):
-            self.list_of_playlist[i]
+    def load_all_playlist(self, search_dir) -> list:
+        files = os.listdir(search_dir) 
 
-
-'''
+        for i in range(len(files)):
+            tmp_line = files[i].split(".")
+            if(tmp_line[1] == "csv"):
+                self.all_playlist.append(PlayList(tmp_line))
+                self.all_playlist[i].load_playlist(files[i])
+    
 
 if __name__ == "__main__":
+
+    player = MusicPlayer()
+    player.play_playlist(0) 
 
     '''
     #test for playlist
