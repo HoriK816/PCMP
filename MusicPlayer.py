@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 import time 
 from Music import Music
 from PlaySetting import PlaySetting
@@ -7,6 +8,7 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList
 from SystemSetting import SystemSetting
 from PlayList import PlayList
+from PlayTitleScreen import PlayTitleScreen
 
 class MusicPlayer:
     key_input : str
@@ -114,8 +116,28 @@ class MusicPlayer:
                     self.play_title(self.all_playlist[i].music_list[j])
                     
     def main(self) -> None: # main loop
-        pass
 
+        #for test
+        pygame.init()   
+        pygame.screen = pygame.display.set_mode(size=(200,300))
+        
+        for i in range(len(self.all_songs.music_list)):
+            print(self.all_songs.music_list[i])
+        
+        print(" a : play all songs")
+        print(" s : skip to next")
+        print(" S : skip to previous")
+        print(" v : volume up")
+        print(" Vd : volume down")
+ 
+
+        while(True):
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        sys.exit()
+
+                
 
     def load_all_playlist(self, search_dir) -> list:
         files = os.listdir(search_dir) 
@@ -130,7 +152,9 @@ class MusicPlayer:
 if __name__ == "__main__":
 
     player = MusicPlayer()
-    player.play_playlist("test_list") 
+    play_screen = PlayTitleScreen()
+    play_screen.screen.start()
+    #player.main()
 
     '''
     #test for playlist
