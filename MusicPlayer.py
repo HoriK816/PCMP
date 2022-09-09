@@ -55,8 +55,8 @@ class MusicPlayer:
  
     def skip_song(self,direction:bool) -> None:
         """ skip to next song or previous song """ 
-
-        if(direction):
+    
+        if(direction):#next 
             ret_val = self.all_songs.skip_song_to_next(self.play_index)
             self.play_index = ret_val[0] 
             self.play_info = ret_val[1]
@@ -66,7 +66,8 @@ class MusicPlayer:
             print(self.play_info.file_name)
 
             self.play_title(self.play_info.file_name) 
-        else:
+
+        else:#previous
             ret_val = self.all_songs.skip_song_to_previous(self.play_index)
             self.play_index = ret_val[0]
             self.play_info = ret_val[1]
@@ -107,18 +108,11 @@ class MusicPlayer:
         pass            
 
     def play_playlist(self, name) -> None:
-        '''
-        
-        # rewrite this part.
-
-
-        self.list_of_playlist[0].load_playlist("test_list.csv") #for test
-        print(self.list_of_playlist[0].music_list)
-
-        for i in range(len(self.list_of_playlist[0].music_list)):
-            self.play_title(self.list_of_playlist[0].music_list[i])
-
-        '''
+        for i in range(len(self.all_playlist)):
+            if(name == self.all_playlist[i].playlist_name):
+                for j in range(len(self.all_playlist[i].music_list)):
+                    self.play_title(self.all_playlist[i].music_list[j])
+                    
     def main(self) -> None: # main loop
         pass
 
@@ -129,17 +123,19 @@ class MusicPlayer:
         for i in range(len(files)):
             tmp_line = files[i].split(".")
             if(tmp_line[1] == "csv"):
-                self.all_playlist.append(PlayList(tmp_line))
+                self.all_playlist.append(PlayList(tmp_line[0]))
                 self.all_playlist[i].load_playlist(files[i])
     
 
 if __name__ == "__main__":
 
     player = MusicPlayer()
-    player.play_playlist(0) 
+    player.play_playlist("test_list") 
 
     '''
     #test for playlist
+    
+    #create instance
     player = MusicPlayer()
     player.play_playlist()
     #print(player.all_songs.music_list)
