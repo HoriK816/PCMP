@@ -8,7 +8,8 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList
 from SystemSetting import SystemSetting
 from PlayList import PlayList
-from PlayTitleScreen import PlayTitleScreen
+# from PlayTitleScreen import PlayTitleScreen 
+# don't need it.
 
 class MusicPlayer:
     key_input : str
@@ -47,13 +48,10 @@ class MusicPlayer:
                 self.play_info = Music("materials/"+title)
                 self.play_index = i 
                
-                #for test of skip_song method
                 self.play_info.play(self.play_setting)  
-                counter = 0
-                while(counter < 5):
-                    time.sleep(1)
-                    counter += 1
-                self.play_info.stop()  
+
+                # I should write codes to stop the song.
+
  
     def skip_song(self,direction:bool) -> None:
         """ skip to next song or previous song """ 
@@ -115,6 +113,7 @@ class MusicPlayer:
                 for j in range(len(self.all_playlist[i].music_list)):
                     self.play_title(self.all_playlist[i].music_list[j])
                     
+    '''
     def main(self) -> None: # main loop
 
         #for test
@@ -137,7 +136,7 @@ class MusicPlayer:
                     if event.key == pygame.K_q:
                         sys.exit()
 
-                
+    '''                
 
     def load_all_playlist(self, search_dir) -> list:
         files = os.listdir(search_dir) 
@@ -150,11 +149,23 @@ class MusicPlayer:
     
 
 if __name__ == "__main__":
-
+   
+    #create object
     player = MusicPlayer()
     play_screen = PlayTitleScreen()
+
+    #list
+    tmp_music_list = player.all_songs.music_list
+    play_screen.menu.add_item_list(tmp_music_list)
+    tmp_item = play_screen.menu.get()
+    play_screen.play_title_label.set_title(tmp_item)
+
+    
+
+    #start
     play_screen.screen.start()
-    #player.main()
+
+
 
     '''
     #test for playlist
