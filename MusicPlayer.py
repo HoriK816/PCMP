@@ -8,8 +8,7 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList
 from SystemSetting import SystemSetting
 from PlayList import PlayList
-# from PlayTitleScreen import PlayTitleScreen 
-# don't need it.
+from PlayTitleScreen import PlayTitleScreen 
 
 class MusicPlayer:
     key_input : str
@@ -57,24 +56,28 @@ class MusicPlayer:
         """ skip to next song or previous song """ 
     
         if(direction):#next 
+            self.play_info.stop()
+
             ret_val = self.all_songs.skip_song_to_next(self.play_index)
             self.play_index = ret_val[0] 
             self.play_info = ret_val[1]
-
+            '''
             print("skip the song!")
             print("index=" + str(self.play_index))
             print(self.play_info.file_name)
-
+            '''
             self.play_title(self.play_info.file_name) 
 
         else:#previous
+            self.play_info.stop()
             ret_val = self.all_songs.skip_song_to_previous(self.play_index)
             self.play_index = ret_val[0]
             self.play_info = ret_val[1]
+            '''
             print("skip the song!")
             print("index=" + str(self.play_index))
             print(self.play_info.file_name)
-
+            '''
             self.play_title(self.play_info.file_name)
  
     def move_5seconds(self,direction:bool) -> None:
@@ -152,19 +155,10 @@ if __name__ == "__main__":
    
     #create object
     player = MusicPlayer()
-    play_screen = PlayTitleScreen()
-
-    #list
-    tmp_music_list = player.all_songs.music_list
-    play_screen.menu.add_item_list(tmp_music_list)
-    tmp_item = play_screen.menu.get()
-    play_screen.play_title_label.set_title(tmp_item)
-
-    
+    play_screen = PlayTitleScreen(player)
 
     #start
     play_screen.screen.start()
-
 
 
     '''
