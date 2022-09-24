@@ -33,7 +33,7 @@ class PlayListScreen:
         self.screen.add_button(title="update",row=0,column=8,column_span=4,command=self._update_play_info)
 
         #music list
-        self.menu = self.screen.add_scroll_menu(title="All Songs", row=1, column=0, row_span=14, column_span=12) 
+        self.menu = self.screen.add_scroll_menu(title="PlayList", row=1, column=0, row_span=14, column_span=12) 
 
         self.menu.add_key_command(97, self._update_play_info) 
 
@@ -64,7 +64,8 @@ class PlayListScreen:
         self.play_title_label.toggle_border()
 
         #initialize list
-        self.menu.add_item_list(self.player.all_songs.music_list)
+        for i in range(len(self.player.all_playlist)):
+            self.menu.add_item(self.player.all_playlist[i].playlist_name)
         self.content.add_item(self.menu.get())
         self._update_play_info()
         self.volume_label.toggle_border()
@@ -73,14 +74,25 @@ class PlayListScreen:
         
     def _update_play_info(self):
         self.content.clear() 
-        self.content.add_item(self.menu.get())
-        self.play_title_label.set_title(self.menu.get())
+
+        for i in range(len(self.player.all_playlist)):
+            name = self.menu.get()
+            if(name == self.player.all_playlist[i].playlist_name):
+                playlist_index = i
+                break
+        
+        self.content.add_item_list(self.player.all_playlist[playlist_index].music_list)
+
+        #for test
+        #self.content.add_item_list(self.player.all_playlist[0].music_list)
+        #self.play_title_label.set_title(self.content.get())
 
     def _update_all_song_list(self,list_item:list):
         pass
 
     def _start_music(self):
-        self.player.play_title(self.play_title_label.get_title())
+        #self.player.play_title(self.play_title_label.get_title())
+        self.player.play_title(self.content.get())
 
     def _stop_music(self):
         self.player.play_info.stop()
