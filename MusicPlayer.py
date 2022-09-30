@@ -8,7 +8,7 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList
 from SystemSetting import SystemSetting
 from PlayList import PlayList
-from PlayTitleScreen import PlayTitleScreen 
+#from PlayTitleScreen import PlayTitleScreen 
 
 class MusicPlayer:
     key_input : str

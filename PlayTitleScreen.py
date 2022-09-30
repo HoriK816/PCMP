@@ -8,7 +8,7 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList 
 from SystemSetting import SystemSetting
 from PlayList import PlayList
-#from MusicPlayer import MusicPlayer
+from MusicPlayer import MusicPlayer
 
 class PlayTitleScreen:
     screen : py_cui 
@@ -27,6 +27,7 @@ class PlayTitleScreen:
         #mode select tab
         self.screen.add_button(title="all_song",row=0,column=0,column_span=4)
         self.screen.add_button(title="play_list",row=0,column=4,column_span=4)
+
 
         #for test 
         self.screen.add_button(title="update",row=0,column=8,column_span=4,command=self._update_play_info)
@@ -52,6 +53,7 @@ class PlayTitleScreen:
     
         #status bar
         self.volume_label = self.screen.add_label(title="vol:"+str(self.vol), row=16, column=0,column_span=4)
+
         #self.speed_label = self.screen.add_label(title="speed:"+str(self.speed), row=8, column=1, column_span=1)
         #self.shuffle_label = self.screen.add_label(title="shuffle: OFF", row=8, column=2, column_span=1)
       
@@ -65,15 +67,19 @@ class PlayTitleScreen:
         #initialize list
         self.menu.add_item_list(self.player.all_songs.music_list)
         self.content.add_item(self.menu.get())
+       
         self._update_play_info()
+
         self.volume_label.toggle_border()
         #self.speed_label.toggle_border()
         #self.shuffle_label.toggle_border()
-        
+
     def _update_play_info(self):
         self.content.clear() 
         self.content.add_item(self.menu.get())
-        self.play_title_label.set_title(self.menu.get())
+
+        if(self.menu.get() != None):
+            self.play_title_label.set_title(self.menu.get())
 
     def _update_all_song_list(self,list_item:list):
         pass
