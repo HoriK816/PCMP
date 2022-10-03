@@ -25,6 +25,58 @@ class PlayListScreen:
         self.speed = music_player.play_setting.play_speed 
         self.mode_list = ["all_song","play_list"]
 
+        self._create_widges()
+
+        #initialize list
+        for i in range(len(self.player.all_playlist)):
+            self.menu.add_item(self.player.all_playlist[i].playlist_name)
+        self.content.add_item(self.menu.get())
+        self._update_play_info()
+        self.volume_label.toggle_border()
+        
+    def _update_play_info(self):
+        self.content.clear() 
+
+        playlist_index = 0
+
+        for i in range(len(self.player.all_playlist)):
+            name = self.menu.get()
+            if(name == self.player.all_playlist[i].playlist_name):
+                playlist_index = i
+                break
+        
+        self.content.add_item_list(self.player.all_playlist[playlist_index].music_list)
+
+    def _update_all_song_list(self,list_item:list):
+        pass
+
+    def _start_music(self):
+        self.player.play_playlist(self.menu.get())
+
+    def _stop_music(self):
+        self.player.play_info.stop()
+
+    def _skip_to_next(self):
+        selected_index = self.menu.get_selected_item_index()
+        self.player.skip_song_on_playlist(True,selected_index)
+        self.menu.set_selected_item_index(self.player.play_index)
+        self._update_play_info()
+
+    def _skip_to_previous(self):
+        selected_index = self.menu.get_selected_item_index()
+        self.player.skip_song_on_playlist(False,selected_index)
+        self.menu.set_selected_item_index(self.player.play_index)
+        self._update_play_info()
+
+    def _volume_up(self):
+        self.player.volume_control(True)
+        self.volume_label.set_title("vol:"+str(self.player.play_setting.play_volume))
+
+    def  _volume_down(self):
+        self.player.volume_control(False)
+        self.volume_label.set_title("vol:"+str(self.player.play_setting.play_volume))
+
+    def _create_widges(self):
         #mode select tab
         self.screen.add_button(title="all_song",row=0,column=0,column_span=4)
         self.screen.add_button(title="play_list",row=0,column=4,column_span=4)
@@ -41,9 +93,9 @@ class PlayListScreen:
         self.play_title_label = self.screen.add_label(title="title", row=0, column=14, column_span=8)
         self.progress_bar = self.screen.add_slider(title="progress", row=2, column=14, column_span=8, min_val=0, max_val=100)
 
-        self.start_button = self.screen.add_button(title="start", row=4, column=14,column_span=2, command=self._start_music)
-        self.stop_button = self.screen.add_button(title="stop", row=4, column=16,column_span=2, command=self._stop_music)
-        self.move_previous_button = self.screen.add_button(title="<- 5sec", row=4, column=18,column_span=2)
+        self.start_button = self.screen.add_button(title="start", row=4, column=16,column_span=2, command=self._start_music)
+        self.stop_button = self.screen.add_button(title="stop", row=4, column=18,column_span=2, command=self._stop_music)
+        self.move_previous_button = self.screen.add_button(title="<- 5sec", row=4, column=14,column_span=2)
         self.move_next_button = self.screen.add_button(title="5sec ->", row=4, column=20,column_span=2)
         self.skip_next_button = self.screen.add_button("skip->", row=6, column=20,column_span=2,command=self._skip_to_next)
         self.skip_previous_button = self.screen.add_button("<-skip",row=6, column=14,column_span=2,command=self._skip_to_previous)
@@ -53,67 +105,13 @@ class PlayListScreen:
     
         #status bar
         self.volume_label = self.screen.add_label(title="vol:"+str(self.vol), row=16, column=0,column_span=4)
-        #self.speed_label = self.screen.add_label(title="speed:"+str(self.speed), row=8, column=1, column_span=1)
-        #self.shuffle_label = self.screen.add_label(title="shuffle: OFF", row=8, column=2, column_span=1)
-      
+
         #control button
         self.volume_up_button = self.screen.add_button(title="up", row=16,column=4,column_span=2,command=self._volume_up)
         self.volume_up_button = self.screen.add_button(title="down", row=16,column=6,column_span=2,command=self._volume_down) 
 
         #toggle 
         self.play_title_label.toggle_border()
-
-        #initialize list
-        for i in range(len(self.player.all_playlist)):
-            self.menu.add_item(self.player.all_playlist[i].playlist_name)
-        self.content.add_item(self.menu.get())
-        self._update_play_info()
-        self.volume_label.toggle_border()
-        #self.speed_label.toggle_border()
-        #self.shuffle_label.toggle_border()
-        
-    def _update_play_info(self):
-        self.content.clear() 
-
-        for i in range(len(self.player.all_playlist)):
-            name = self.menu.get()
-            if(name == self.player.all_playlist[i].playlist_name):
-                playlist_index = i
-                break
-        
-        self.content.add_item_list(self.player.all_playlist[playlist_index].music_list)
-
-        #for test
-        #self.content.add_item_list(self.player.all_playlist[0].music_list)
-        #self.play_title_label.set_title(self.content.get())
-
-    def _update_all_song_list(self,list_item:list):
-        pass
-
-    def _start_music(self):
-        #self.player.play_title(self.play_title_label.get_title())
-        self.player.play_title(self.content.get())
-
-    def _stop_music(self):
-        self.player.play_info.stop()
-
-    def _skip_to_next(self):
-        self.player.skip_song(True)
-        self.menu.set_selected_item_index(self.player.play_index)
-        self._update_play_info()
-
-    def _skip_to_previous(self):
-        self.player.skip_song(False)
-        self.menu.set_selected_item_index(self.player.play_index)
-        self._update_play_info()
-
-    def _volume_up(self):
-        self.player.volume_control(True)
-        self.volume_label.set_title("vol:"+str(self.player.play_setting.play_volume))
-
-    def  _volume_down(self):
-        self.player.volume_control(False)
-        self.volume_label.set_title("vol:"+str(self.player.play_setting.play_volume))
 
 if __name__ == "__main__":
     #create object

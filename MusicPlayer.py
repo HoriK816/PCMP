@@ -8,7 +8,7 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList
 from SystemSetting import SystemSetting
 from PlayList import PlayList
-#from PlayTitleScreen import PlayTitleScreen 
+from PlayTitleScreen import PlayTitleScreen 
 
 class MusicPlayer:
     key_input : str
@@ -79,7 +79,38 @@ class MusicPlayer:
             print(self.play_info.file_name)
             '''
             self.play_title(self.play_info.file_name)
- 
+
+    # TODO: combine this method with skip_song()
+    def skip_song_on_playlist(self,direction:bool,playlist_number) -> None:
+        """ skip to next song or previous song """
+    
+        if(direction):#next 
+            self.play_info.stop()
+
+            tmp_playlist = self.all_playlist[playlist_number]
+            ret_val = tmp_playlist.skip_song_to_next(self.play_index)
+
+            self.play_index = ret_val[0] 
+            self.play_info = ret_val[1]
+            
+            self.play_title(self.play_info.file_name) 
+
+        else:#previous
+            self.play_info.stop()
+
+            tmp_playlist = self.all_playlist[playlist_number]
+            ret_val = tmp_playlist.skip_song_to_previous(self.play_index)
+            self.play_index = ret_val[0]
+            self.play_info = ret_val[1]
+            '''
+            print("skip the song!")
+            print("index=" + str(self.play_index))
+            print(self.play_info.file_name)
+            '''
+            self.play_title(self.play_info.file_name)
+
+
+
     def move_5seconds(self,direction:bool) -> None:
         pass
 
@@ -110,9 +141,10 @@ class MusicPlayer:
     def change_sort_method(self) -> None:
         pass            
 
-    def play_playlist(self, name) -> None:
+    def play_playlist(self, tmp_playlist_name) -> None:
         for i in range(len(self.all_playlist)):
-            if(name == self.all_playlist[i].playlist_name):
+            print(self.all_playlist[i].playlist_name)
+            if(tmp_playlist_name == self.all_playlist[i].playlist_name):
                 for j in range(len(self.all_playlist[i].music_list)):
                     self.play_title(self.all_playlist[i].music_list[j])
                     
@@ -161,32 +193,3 @@ if __name__ == "__main__":
     play_screen.screen.start()
 
 
-    '''
-    #test for playlist
-    
-    #create instance
-    player = MusicPlayer()
-    player.play_playlist()
-    #print(player.all_songs.music_list)
-    exit_flag = False
-    #for test
-    while(True):
-        print("1-10 : select songs")
-        print(" sn : skip to next")
-        print(" sp : skip to previous")
-        print(" vu : volume up")
-        print(" vd : volume down")
-        print("voluem = " + str(player.play_setting.play_volume))
-        select = input()
-        if(select == "sn"):
-            player.skip_song(True) 
-        elif(select == "sp"):
-            player.skip_song(False) 
-        elif(select == "vu"):
-            player.volume_control(True)
-        elif(select == "vd"):
-            player.volume_control(False)
-        else:
-            number = int(select)
-            player.play_title(player.all_songs.music_list[number])
-    '''
