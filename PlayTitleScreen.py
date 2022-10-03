@@ -8,7 +8,6 @@ from MusicList import MusicList
 from AllSongsList import AllSongsList 
 from SystemSetting import SystemSetting
 from PlayList import PlayList
-from MusicPlayer import MusicPlayer
 
 class PlayTitleScreen:
     screen : py_cui 
@@ -23,11 +22,21 @@ class PlayTitleScreen:
         self.vol = music_player.play_setting.play_volume 
         self.speed = music_player.play_setting.play_speed 
         self.mode_list = ["all_song","play_list"]
+        
+        self._create_widges()
+    
+        #initialize list
+        self.menu.add_item_list(self.player.all_songs.music_list)
+        self.content.add_item(self.menu.get())
+       
+        self._update_play_info()
+
+
+    def _create_widges(self):
 
         #mode select tab
         self.screen.add_button(title="all_song",row=0,column=0,column_span=4)
         self.screen.add_button(title="play_list",row=0,column=4,column_span=4)
-
 
         #for test 
         self.screen.add_button(title="update",row=0,column=8,column_span=4,command=self._update_play_info)
@@ -41,9 +50,11 @@ class PlayTitleScreen:
         self.play_title_label = self.screen.add_label(title="title", row=0, column=14, column_span=8)
         self.progress_bar = self.screen.add_slider(title="progress", row=2, column=14, column_span=8, min_val=0, max_val=100)
 
-        self.start_button = self.screen.add_button(title="start", row=4, column=14,column_span=2, command=self._start_music)
-        self.stop_button = self.screen.add_button(title="stop", row=4, column=16,column_span=2, command=self._stop_music)
-        self.move_previous_button = self.screen.add_button(title="<- 5sec", row=4, column=18,column_span=2)
+        self.start_button = self.screen.add_button(title="start", row=4, column=16,column_span=2, command=self._start_music)
+        self.stop_button = self.screen.add_button(title="stop", row=4, column=18,column_span=2, command=self._stop_music)
+        self.move_previous_button = self.screen.add_button(title="<- 5sec", row=4, column=14,column_span=2)
+
+
         self.move_next_button = self.screen.add_button(title="5sec ->", row=4, column=20,column_span=2)
         self.skip_next_button = self.screen.add_button("skip->", row=6, column=20,column_span=2,command=self._skip_to_next)
         self.skip_previous_button = self.screen.add_button("<-skip",row=6, column=14,column_span=2,command=self._skip_to_previous)
@@ -63,16 +74,7 @@ class PlayTitleScreen:
 
         #toggle 
         self.play_title_label.toggle_border()
-
-        #initialize list
-        self.menu.add_item_list(self.player.all_songs.music_list)
-        self.content.add_item(self.menu.get())
-       
-        self._update_play_info()
-
         self.volume_label.toggle_border()
-        #self.speed_label.toggle_border()
-        #self.shuffle_label.toggle_border()
 
     def _update_play_info(self):
         self.content.clear() 
