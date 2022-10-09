@@ -1,4 +1,4 @@
-import Music
+import music
 from MusicList import MusicList
 
 class PlayList(MusicList):
@@ -10,6 +10,8 @@ class PlayList(MusicList):
         self.playlist_name = name
          
     def load_playlist(self,file_name:str):
+        # add musics to this playlist 
+
         with open("playlist/"+file_name,"r") as f:
             for line in f:
                 self.music_list.append(line.split(",")[0])

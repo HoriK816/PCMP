@@ -1,5 +1,5 @@
 import os
-import Music
+import music
 from MusicList import MusicList 
 
 class AllSongsList(MusicList):
@@ -16,9 +16,6 @@ class AllSongsList(MusicList):
                     or tmp_line[1] == "ogg"):
                 self.music_list.append(files[i])
 
-    #is this method necessary??
-    def seach_title(self, title:str) -> Music:
-        pass
 
 if __name__ == "__main__":
     tmp_list = AllSongsList("./materials")

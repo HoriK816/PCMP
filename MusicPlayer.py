@@ -2,7 +2,7 @@ import pygame
 import os
 import sys
 import time 
-from Music import Music
+from music import Music
 from PlaySetting import PlaySetting
 from MusicList import MusicList
 from AllSongsList import AllSongsList
@@ -25,7 +25,6 @@ class MusicPlayer:
         #setting 
         self.system_setting = SystemSetting()
         self.play_setting = PlaySetting()
-        self.skip_direction = True # for test 
 
         #music all song 
         self.all_songs = AllSongsList(self.system_setting.search_path)
@@ -34,13 +33,13 @@ class MusicPlayer:
         self.all_playlist = []
         self.load_all_playlist("playlist/")
 
-        #self.list_of_playlist.append(PlayList("test_list")) #for test
-
         #information about the song
         self.play_info = None
 
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
+
+        print(title)
 
         for i in range(len(self.all_songs.music_list)):
             if(title ==  self.all_songs.music_list[i]):
@@ -55,125 +54,82 @@ class MusicPlayer:
     def skip_song(self,direction:bool) -> None:
         """ skip to next song or previous song """ 
     
-        if(direction):#next 
-            self.play_info.stop()
+        # stop current song
+        self.play_info.stop()
 
+        # when the direction is true, skip to next song
+        if(direction):
+
+            # get the information about next song 
             ret_val = self.all_songs.skip_song_to_next(self.play_index)
             self.play_index = ret_val[0] 
             self.play_info = ret_val[1]
-            '''
-            print("skip the song!")
-            print("index=" + str(self.play_index))
-            print(self.play_info.file_name)
-            '''
-            self.play_title(self.play_info.file_name) 
 
-        else:#previous
-            self.play_info.stop()
+        # when the direction is false, skip to previous song
+        else:
+
+            # get the information about previous song
             ret_val = self.all_songs.skip_song_to_previous(self.play_index)
             self.play_index = ret_val[0]
             self.play_info = ret_val[1]
-            '''
-            print("skip the song!")
-            print("index=" + str(self.play_index))
-            print(self.play_info.file_name)
-            '''
-            self.play_title(self.play_info.file_name)
 
-    # TODO: combine this method with skip_song()
-    def skip_song_on_playlist(self,direction:bool,playlist_number) -> None:
-        """ skip to next song or previous song """
-    
-        if(direction):#next 
-            self.play_info.stop()
-
-            tmp_playlist = self.all_playlist[playlist_number]
-            ret_val = tmp_playlist.skip_song_to_next(self.play_index)
-
-            self.play_index = ret_val[0] 
-            self.play_info = ret_val[1]
-            
-            self.play_title(self.play_info.file_name) 
-
-        else:#previous
-            self.play_info.stop()
-
-            tmp_playlist = self.all_playlist[playlist_number]
-            ret_val = tmp_playlist.skip_song_to_previous(self.play_index)
-            self.play_index = ret_val[0]
-            self.play_info = ret_val[1]
-            '''
-            print("skip the song!")
-            print("index=" + str(self.play_index))
-            print(self.play_info.file_name)
-            '''
-            self.play_title(self.play_info.file_name)
-
-
+        # start next song
+        self.play_title(self.play_info.file_name)
 
     def move_5seconds(self,direction:bool) -> None:
         pass
 
     def volume_control(self,direction:bool) -> None:
-        """ to control volume """ 
+        """ change volume """ 
+        
+        current_volume = self.play_setting.play_volume 
 
-        new_volume = self.play_setting.play_volume 
+        # when the direction is true, turn the volume up
+        if(direction): 
+            new_volume = current_volume + 0.2
 
-        if(direction): #up
-            new_volume += 0.2
-            if(new_volume <= 1.0):
+            if(new_volume <= 1.0): # max is 1.0
                 new_volume = round(new_volume,1)
                 self.play_setting.change_volume(new_volume) 
             else:
                 self.play_setting.change_volume(1.0)
-        else: #down
-            new_volume -= 0.2
-            if(new_volume >= 0.0):
+
+        # when the direction is false, turn the volume down
+        else: 
+            new_volume = current_volume - 0.2
+
+            if(new_volume >= 0.0): # min is 0.0
                 new_volume = round(new_volume,1)
                 self.play_setting.change_volume(new_volume)
             else:
                 self.play_setting.change_volume(0.0)
 
     def change_dir(self,new_path:str) -> None:
+        """ change the path of music directory """
+
         new_dir = input()
         system_setting.change_search_path(new_dir)
 
     def change_sort_method(self) -> None:
+        """ change the order of music """
         pass            
 
-    def play_playlist(self, tmp_playlist_name) -> None:
+    def play_playlist(self, tmp_playlist_name,index) -> None:
+        '''
+        is this method necessary ??  
+
         for i in range(len(self.all_playlist)):
-            print(self.all_playlist[i].playlist_name)
             if(tmp_playlist_name == self.all_playlist[i].playlist_name):
                 for j in range(len(self.all_playlist[i].music_list)):
                     self.play_title(self.all_playlist[i].music_list[j])
+        '''
+
+        pass
                     
-    '''
-    def main(self) -> None: # main loop
-
-        #for test
-        pygame.init()   
-        pygame.screen = pygame.display.set_mode(size=(200,300))
-        
-        for i in range(len(self.all_songs.music_list)):
-            print(self.all_songs.music_list[i])
-        
-        print(" a : play all songs")
-        print(" s : skip to next")
-        print(" S : skip to previous")
-        print(" v : volume up")
-        print(" Vd : volume down")
- 
-
-        while(True):
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        sys.exit()
-
-    '''                
 
     def load_all_playlist(self, search_dir) -> list:
+        """ load all music from search_dir """
+
         files = os.listdir(search_dir) 
 
         for i in range(len(files)):
@@ -181,7 +137,6 @@ class MusicPlayer:
             if(tmp_line[1] == "csv"):
                 self.all_playlist.append(PlayList(tmp_line[0]))
                 self.all_playlist[i].load_playlist(files[i])
-    
 
 if __name__ == "__main__":
    

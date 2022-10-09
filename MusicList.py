@@ -1,5 +1,5 @@
 import random
-from Music import Music 
+from music import Music 
 class MusicList:
 
     music_list:list 
