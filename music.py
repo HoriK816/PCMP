@@ -10,19 +10,25 @@ class Music:
 
     def __init__(self, name):
         self.file_name =  name
-        self.is_playing = False 
+        self.is_paused = False
 
     def play(self,play_setting) -> (str,int):
-        self.setting = play_setting
-        pygame.mixer.init(int(44100*self.setting.play_speed)) #fix it!
-        pygame.mixer.music.set_volume(play_setting.play_volume)
-        pygame.mixer.music.load(self.file_name)
-        pygame.mixer.music.play(1)
-        self.is_playing = True    
+        if not self.is_paused:
+            self.setting = play_setting
+            pygame.mixer.init(44100)
+            pygame.mixer.music.set_volume(play_setting.play_volume)
+            pygame.mixer.music.load(self.file_name)
+            pygame.mixer.music.play(loops=1)
+        else:
+            self._unpause()
 
     def stop(self) -> None:
-        pygame.mixer.music.stop()
-        self.is_playing = False
+        pygame.mixer.music.pause()
+        self.is_paused = True
+
+    def _unpause(self) -> None:
+        pygame.mixer.music.unpause()
+        self.is_puased = False
 
 if __name__ == "__main__":
     tmp_setting = PlaySetting()

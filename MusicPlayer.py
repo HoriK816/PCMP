@@ -11,14 +11,6 @@ from PlayList import PlayList
 from PlayTitleScreen import PlayTitleScreen 
 
 class MusicPlayer:
-    key_input : str
-    all_songs : AllSongsList
-    play_info : Music
-    play_index : int #consider it !!
-    play_setting : PlaySetting
-    system_setting : SystemSetting
-    all_playlist : list
-    playlist_name : str
 
     def __init__(self):
 
@@ -38,19 +30,18 @@ class MusicPlayer:
 
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
+        
+        if (self.play_info == None):
+            self.play_index, self.play_info = self._get_selected_music(title)
+        elif(self.play_info.file_name != ("materials/"+title)): 
+            print(self.play_info.file_name != ("materials/"+title))
+            # load music which user selected
+            self.play_index, self.play_info = self._get_selected_music(title)
+                     
+        # play music
+        self.play_info.play(self.play_setting)  
 
-        print(title)
 
-        for i in range(len(self.all_songs.music_list)):
-            if(title ==  self.all_songs.music_list[i]):
-                self.play_info = Music("materials/"+title)
-                self.play_index = i 
-               
-                self.play_info.play(self.play_setting)  
-
-                # I should write codes to stop the song.
-
- 
     def skip_song(self,direction:bool) -> None:
         """ skip to next song or previous song """ 
     
@@ -114,18 +105,17 @@ class MusicPlayer:
         """ change the order of music """
         pass            
 
+    '''
     def play_playlist(self, tmp_playlist_name,index) -> None:
-        '''
         is this method necessary ??  
 
         for i in range(len(self.all_playlist)):
             if(tmp_playlist_name == self.all_playlist[i].playlist_name):
                 for j in range(len(self.all_playlist[i].music_list)):
                     self.play_title(self.all_playlist[i].music_list[j])
-        '''
 
-        pass
                     
+    '''
 
     def load_all_playlist(self, search_dir) -> list:
         """ load all music from search_dir """
@@ -138,6 +128,12 @@ class MusicPlayer:
                 self.all_playlist.append(PlayList(tmp_line[0]))
                 self.all_playlist[i].load_playlist(files[i])
 
+
+    def _get_selected_music(self,title:str) -> (int,Music):
+        for i in range(len(self.all_songs.music_list)):
+            if(title == self.all_songs.music_list[i]):
+                return i, Music("materials/"+title)
+ 
 if __name__ == "__main__":
    
     #create object

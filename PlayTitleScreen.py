@@ -21,8 +21,8 @@ class PlayTitleScreen:
         
         self._create_widges()
     
-        #initialize music list
-        self.menu.add_item_list(self.player.all_songs.music_list)
+        # update music list
+        self._update_all_song_list()
        
         # load the name of selected music
         self._update_play_info()
@@ -95,9 +95,14 @@ class PlayTitleScreen:
         if(self.menu.get() != None):
             self.play_title_label.set_title(self.menu.get())
 
-    def _update_all_song_list(self,list_item:list):
+    def _update_all_song_list(self):
         """ reload music directory """
-        pass
+        
+        self.menu.clear()
+
+        #initialize music list
+        self.menu.add_item_list(self.player.all_songs.music_list)
+
 
     def _start_music(self):
         """ start current music """ 
@@ -122,12 +127,14 @@ class PlayTitleScreen:
     def _volume_up(self):
         """ turn the volume up"""
         self.player.volume_control(True)
-        self.volume_label.set_title("vol:"+str(self.player.play_setting.play_volume))
+        self.volume_label.set_title("vol:"+str(self.player.play_setting
+            .play_volume))
 
     def  _volume_down(self):
         """ turn the volume down """
         self.player.volume_control(False)
-        self.volume_label.set_title("vol:"+str(self.player.play_setting.play_volume))
+        self.volume_label.set_title("vol:"+str(self.player.play_setting
+            .play_volume))
 
 if __name__ == "__main__":
 
