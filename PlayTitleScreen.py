@@ -63,15 +63,15 @@ class PlayTitleScreen:
                 row=4, column=14,column_span=2)
 
         self.move_next_button = self.screen.add_button(title="5sec ->",
-                row=4, column=20,column_span=2)
-        '''
+                row=4, column=20,column_span=2, command=self._move_to_next_five_sec)
        
+        '''
         # the button to skip to next song 
-        self.skip_next_button = self.screen.add_button("skip->", row=6,
+        self.skip_next_button = self.screen.add_button("skip->", row=4,
                 column=20,column_span=2,command=self._skip_to_next)
 
         # the button to skip to previous song
-        self.skip_previous_button = self.screen.add_button("<-skip",row=6,
+        self.skip_previous_button = self.screen.add_button("<-skip",row=4,
                 column=14,column_span=2,command=self._skip_to_previous)
 
         # the label to give information about current volume
@@ -123,6 +123,17 @@ class PlayTitleScreen:
         self.player.skip_song(False)
         self.menu.set_selected_item_index(self.player.play_index)
         self._update_play_info()
+
+    '''
+    maybe, I won't use these methods forever ...
+
+    def _move_to_next_five_sec(self):
+        self.player.move_five_seconds(True)
+
+    def _move_to_previous_five_sec(self):
+        self.player.move_five_seconds(False)
+
+    '''
 
     def _volume_up(self):
         """ turn the volume up"""

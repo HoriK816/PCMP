@@ -30,11 +30,14 @@ class MusicPlayer:
 
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
+        # At the first time, player be sure to lead music.
+        # if the music had already loaded, player don't load again 
         
         if (self.play_info == None):
+            # load music which user selected
             self.play_index, self.play_info = self._get_selected_music(title)
+
         elif(self.play_info.file_name != ("materials/"+title)): 
-            print(self.play_info.file_name != ("materials/"+title))
             # load music which user selected
             self.play_index, self.play_info = self._get_selected_music(title)
                      
@@ -67,8 +70,11 @@ class MusicPlayer:
         # start next song
         self.play_title(self.play_info.file_name)
 
-    def move_5seconds(self,direction:bool) -> None:
-        pass
+    def move_five_seconds(self,direction:bool) -> None:
+        if(direction):
+            self.play_info.move_five_seconds_to_next()
+        else:
+            self.play_info.move_five_seconds_to_previous() 
 
     def volume_control(self,direction:bool) -> None:
         """ change volume """ 
@@ -130,6 +136,8 @@ class MusicPlayer:
 
 
     def _get_selected_music(self,title:str) -> (int,Music):
+        """ seek the title from list of songs """
+
         for i in range(len(self.all_songs.music_list)):
             if(title == self.all_songs.music_list[i]):
                 return i, Music("materials/"+title)
