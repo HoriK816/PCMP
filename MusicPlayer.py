@@ -70,7 +70,9 @@ class MusicPlayer:
         # start next song
         self.play_title(self.play_info.file_name)
 
+   
     def move_five_seconds(self,direction:bool) -> None:
+        """ I was going to use this method to move playing position thought..."""
         if(direction):
             self.play_info.move_five_seconds_to_next()
         else:
@@ -127,7 +129,6 @@ class MusicPlayer:
         """ load all music from search_dir """
 
         files = os.listdir(search_dir) 
-
         for i in range(len(files)):
             tmp_line = files[i].split(".")
             if(tmp_line[1] == "csv"):
