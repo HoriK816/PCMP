@@ -113,17 +113,19 @@ class MusicPlayer:
         """ change the order of music """
         pass            
 
-    '''
-    def play_playlist(self, tmp_playlist_name,index) -> None:
-        is this method necessary ??  
+'''
+    def play_playlist(self, tmp_playlist_name) -> None:
+        #is this method necessary ??  
 
         for i in range(len(self.all_playlist)):
             if(tmp_playlist_name == self.all_playlist[i].playlist_name):
                 for j in range(len(self.all_playlist[i].music_list)):
                     self.play_title(self.all_playlist[i].music_list[j])
 
+'''
+
+
                     
-    '''
 
     def load_all_playlist(self, search_dir) -> list:
         """ load all music from search_dir """
