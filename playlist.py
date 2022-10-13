@@ -1,5 +1,5 @@
 import music
-from MusicList import MusicList
+from music_list import MusicList
 
 class PlayList(MusicList):
     

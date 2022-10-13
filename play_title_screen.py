@@ -3,11 +3,11 @@ import os
 import time 
 import py_cui
 from music import Music
-from PlaySetting import PlaySetting
-from MusicList import MusicList
-from AllSongsList import AllSongsList 
-from SystemSetting import SystemSetting
-from PlayList import PlayList
+from play_setting import PlaySetting
+from music_list import MusicList
+from all_songs_list import AllSongsList 
+from system_setting import SystemSetting
+from playlist import PlayList
 
 class PlayTitleScreen:
 

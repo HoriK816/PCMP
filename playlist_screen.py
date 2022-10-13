@@ -3,12 +3,12 @@ import os
 import time 
 import py_cui
 from music import Music
-from PlaySetting import PlaySetting
-from MusicList import MusicList
-from AllSongsList import AllSongsList 
-from SystemSetting import SystemSetting
-from PlayList import PlayList
-from MusicPlayer import MusicPlayer
+from play_setting import PlaySetting
+from musiclist import MusicList
+from all_songs_list import AllSongsList 
+from system_setting import SystemSetting
+from playlist import PlayList
+from music_player import MusicPlayer
 
 
 class PlayListScreen:
@@ -20,8 +20,6 @@ class PlayListScreen:
         self.vol = music_player.play_setting.play_volume 
         self.speed = music_player.play_setting.play_speed 
         self.mode_list = ["all_song","play_list"]
-        #is the attribute necessary ???  
-        self.music_index = 0
 
         self._create_widges()
 
@@ -60,10 +58,12 @@ class PlayListScreen:
             self.menu.add_item(self.player.all_playlist[i].playlist_name)
 
 
-
     def _start_music(self):
         """ start music """
-        self.player.play_playlist(self.menu.get(), self.music_index)
+        pass
+
+        # I must find the way to play music without play_playlist method
+        #self.player.play_playlist(self.menu.get())
 
     def _stop_music(self):
         """ stop music """ 

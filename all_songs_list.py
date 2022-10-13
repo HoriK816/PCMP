@@ -1,6 +1,6 @@
 import os
 import music
-from MusicList import MusicList 
+from music_list import MusicList 
 
 class AllSongsList(MusicList):
 

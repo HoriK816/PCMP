@@ -3,12 +3,12 @@ import os
 import sys
 import time 
 from music import Music
-from PlaySetting import PlaySetting
-from MusicList import MusicList
-from AllSongsList import AllSongsList
-from SystemSetting import SystemSetting
-from PlayList import PlayList
-from PlayTitleScreen import PlayTitleScreen 
+from play_setting import PlaySetting
+from music_list import MusicList
+from all_songs_list import AllSongsList
+from system_setting import SystemSetting
+from playlist import PlayList
+from play_title_screen import PlayTitleScreen 
 
 class MusicPlayer:
 
@@ -113,7 +113,7 @@ class MusicPlayer:
         """ change the order of music """
         pass            
 
-'''
+    '''
     def play_playlist(self, tmp_playlist_name) -> None:
         #is this method necessary ??  
 
@@ -122,10 +122,7 @@ class MusicPlayer:
                 for j in range(len(self.all_playlist[i].music_list)):
                     self.play_title(self.all_playlist[i].music_list[j])
 
-'''
-
-
-                    
+    '''
 
     def load_all_playlist(self, search_dir) -> list:
         """ load all music from search_dir """

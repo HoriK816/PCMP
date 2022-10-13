@@ -1,6 +1,6 @@
 import pygame
 import time 
-from PlaySetting import PlaySetting
+from play_setting import PlaySetting
 
 class Music:
 
