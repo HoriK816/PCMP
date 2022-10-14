@@ -17,7 +17,6 @@ class PlayTitleScreen:
         self.screen.set_title("Music Player")
         self.vol = music_player.play_setting.play_volume 
         self.speed = music_player.play_setting.play_speed 
-        self.mode_list = ["all_song","play_list"]
         
         self._create_widges()
     
@@ -32,15 +31,18 @@ class PlayTitleScreen:
 
         # tabs to select play mode
         self.screen.add_button(title="all_song",row=0,
-                column=0,column_span=4)
+                column=0, column_span=4)
         self.screen.add_button(title="play_list",row=0,
-                column=4,column_span=4)
+                column=4, column_span=4, command=self._change_to_playlist_mode)
+
+        self.screen.add_button(title="quit",row=0,
+                column=8, column_span=2, command=self._exit_system)
 
         # all music list
         self.menu = self.screen.add_scroll_menu(title="All Songs",
                 row=1, column=0, row_span=14, column_span=12) 
 
-        self.menu.add_key_command(97, self._update_play_info) 
+        self.menu.add_key_command(10, self._update_play_info) 
 
         # the label to give information about current song
         self.play_title_label = self.screen.add_label(title="title",
@@ -110,7 +112,8 @@ class PlayTitleScreen:
 
     def _stop_music(self):
         """ stop current music """ 
-        self.player.play_info.stop()
+        if self.player.play_info is not None:
+            self.player.play_info.stop()
 
     def _skip_to_next(self):
         """ skip to next song in all music list"""
@@ -146,6 +149,21 @@ class PlayTitleScreen:
         self.player.volume_control(False)
         self.volume_label.set_title("vol:"+str(self.player.play_setting
             .play_volume))
+
+    def _change_to_playlist_mode(self):
+        """ the method which changes to playlist mode """
+        
+        # change to playlist mode
+        self.player.mode = "playlist" 
+
+        # stop this screen
+        self.screen.stop()
+
+    def _exit_system(self):
+
+        self.player.is_exit = True
+
+        self.screen.stop()
 
 if __name__ == "__main__":
 

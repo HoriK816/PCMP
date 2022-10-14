@@ -9,6 +9,7 @@ from all_songs_list import AllSongsList
 from system_setting import SystemSetting
 from playlist import PlayList
 from play_title_screen import PlayTitleScreen 
+from playlist_screen import PlayListScreen
 
 class MusicPlayer:
 
@@ -27,16 +28,22 @@ class MusicPlayer:
 
         #information about the song
         self.play_info = None
+        self.play_index = 0
+
+        self.is_exit = False
+
+        self.mode_list = ["all_song","play_list"]
+        self.mode = "all_song" 
 
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
+
         # At the first time, player be sure to lead music.
         # if the music had already loaded, player don't load again 
-        
         if (self.play_info == None):
             # load music which user selected
             self.play_index, self.play_info = self._get_selected_music(title)
-
+        
         elif(self.play_info.file_name != ("materials/"+title)): 
             # load music which user selected
             self.play_index, self.play_info = self._get_selected_music(title)
@@ -49,7 +56,9 @@ class MusicPlayer:
         """ skip to next song or previous song """ 
     
         # stop current song
-        self.play_info.stop()
+        is_busy = pygame.mixer.get_busy() 
+        if is_busy:
+            self.play_info.stop()
 
         # when the direction is true, skip to next song
         if(direction):
@@ -68,6 +77,32 @@ class MusicPlayer:
             self.play_info = ret_val[1]
 
         # start next song
+        self.play_title(self.play_info.file_name)
+
+    def skip_song_on_playlist(self,direction:bool,playlist_index:int) -> None:
+        """ skip to next song or previous song on playlist """
+
+        # stop current song
+        self.play_info.stop()
+
+        # get the target playlist
+        target_list = self.all_playlist[playlist_index]
+
+        # when the direction is true, skip to next song
+        if(direction):
+
+            # get the information about next song
+            ret_val = target_list.skip_song_to_next(self.play_index)
+            self.play_index = ret_val[0]
+            self.play_info = ret_val[1]
+            
+        else:
+
+            # get the information about previous song
+            ret_val = target_list.skip_song_to_previous(self.play_index)
+            self.play_index = ret_val[0]
+            self.play_info = ret_val[1]
+        
         self.play_title(self.play_info.file_name)
 
    
@@ -113,17 +148,6 @@ class MusicPlayer:
         """ change the order of music """
         pass            
 
-    '''
-    def play_playlist(self, tmp_playlist_name) -> None:
-        #is this method necessary ??  
-
-        for i in range(len(self.all_playlist)):
-            if(tmp_playlist_name == self.all_playlist[i].playlist_name):
-                for j in range(len(self.all_playlist[i].music_list)):
-                    self.play_title(self.all_playlist[i].music_list[j])
-
-    '''
-
     def load_all_playlist(self, search_dir) -> list:
         """ load all music from search_dir """
 
@@ -146,9 +170,19 @@ if __name__ == "__main__":
    
     #create object
     player = MusicPlayer()
-    play_screen = PlayTitleScreen(player)
 
-    #start
-    play_screen.screen.start()
+
+    while True:
+        if player.is_exit:
+            sys.exit()
+        else:
+            if player.mode == "all_song": 
+                play_screen = PlayTitleScreen(player)
+            elif player.mode == "playlist":
+                play_screen = PlayListScreen(player)
+            
+            # start
+            play_screen.screen.start()
+
 
 

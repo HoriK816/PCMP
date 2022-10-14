@@ -4,11 +4,11 @@ import time
 import py_cui
 from music import Music
 from play_setting import PlaySetting
-from musiclist import MusicList
+from music_list import MusicList
 from all_songs_list import AllSongsList 
 from system_setting import SystemSetting
 from playlist import PlayList
-from music_player import MusicPlayer
+#from music_player import MusicPlayer
 
 
 class PlayListScreen:
@@ -50,7 +50,7 @@ class PlayListScreen:
         
         # clear playlist
         self.player.all_playlist = []
-        player.load_all_playlist("playlist/")
+        self.player.load_all_playlist("playlist/")
         self.menu.clear()
 
         # reload all playlist information
@@ -60,7 +60,9 @@ class PlayListScreen:
 
     def _start_music(self):
         """ start music """
-        pass
+        play_title = self.content.get()
+        self.player.play_title(play_title)
+
 
         # I must find the way to play music without play_playlist method
         #self.player.play_playlist(self.menu.get())
@@ -72,20 +74,18 @@ class PlayListScreen:
     def _skip_to_next(self):
         """ skip to next song in current playlist """
         #get index of the selected playlist
-        selected_list_index = self.menu.get_selected_item_index()
-        selected_music_index = self.content.get_selected_item_index()
+        selected_playlist_index = self.menu.get_selected_item_index()
+        self.player.play_index = self.content.get_selected_item_index()
         #play next song
-        self.player.skip_song_on_playlist(True, selected_list_index, 
-                selected_music_index)
+        self.player.skip_song_on_playlist(True, selected_playlist_index)
 
     def _skip_to_previous(self):
         """ skip to previous song in current playlist """ 
         #get index of the selected playlist and the selected music
-        selected_list_index = self.menu.get_selected_item_index()
-        selected_music_index = self.content.get_selected_item_index()
+        selected_playlist_index = self.menu.get_selected_item_index()
+        self.player.play_index = self.content.get_selected_item_index()
         # play previous song
-        self.player.skip_song_on_playlist(False, selected_list_index,
-                selected_music_index)
+        self.player.skip_song_on_playlist(False, selected_playlist_index)
 
     def _volume_up(self):
         """ turn the volume up """
@@ -103,15 +103,18 @@ class PlayListScreen:
 
         # tabs to select play mode
         self.screen.add_button(title="all_song", row=0,
-                column=0, column_span=4)
+                column=0, column_span=4, command=self._change_to_all_song_mode)
         self.screen.add_button(title="play_list", row=0, 
                 column=4, column_span=4)
+
+        self.screen.add_button(title="quit",row=0,
+                column=8, column_span=2, command=self._exit_system)
 
         # the list of created playlist
         self.menu = self.screen.add_scroll_menu(title="PlayList", 
                 row=1, column=0, row_span=14, column_span=12) 
 
-        self.menu.add_key_command(97, self._update_play_info) 
+        self.menu.add_key_command(10, self._update_play_info) 
 
         # the label to give information about current playlist
         self.play_title_label = self.screen.add_label(title="title",
@@ -138,11 +141,11 @@ class PlayListScreen:
         '''
         
         # the button to skip to next song
-        self.skip_next_button = self.screen.add_button("skip->", row=6,
+        self.skip_next_button = self.screen.add_button("skip->", row=4,
                 column=20,column_span=2,command=self._skip_to_next)
         
         # the button to skip to previous song
-        self.skip_previous_button = self.screen.add_button("<-skip",row=6,
+        self.skip_previous_button = self.screen.add_button("<-skip",row=4,
                 column=14,column_span=2,command=self._skip_to_previous)
 
         # the list of music included in current playlist 
@@ -163,6 +166,22 @@ class PlayListScreen:
 
         # draw border line 
         self.play_title_label.toggle_border()
+
+
+    def _change_to_all_song_mode(self):
+        """ the method which changes to all_song mode """
+
+        # change to all_song mode
+        self.player.mode = "all_song"
+
+        # stop this screen
+        self.screen.stop()
+
+    def _exit_system(self):
+
+        self.player.is_exit = True
+
+        self.screen.stop()
 
 if __name__ == "__main__":
     #create object
