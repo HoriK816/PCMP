@@ -21,7 +21,7 @@ class PlayListScreen:
         self.speed = music_player.play_setting.play_speed 
         self.mode_list = ["all_song","play_list"]
 
-        self._create_widges()
+        self._create_widgets()
 
         #load playlists and music
         self._update_all_song_list()
@@ -99,16 +99,21 @@ class PlayListScreen:
         self.volume_label.set_title("vol:"+str(self.player
             .play_setting.play_volume))
 
-    def _create_widges(self):
+    def _create_widgets(self):
 
         # tabs to select play mode
         self.screen.add_button(title="all_song", row=0,
                 column=0, column_span=4, command=self._change_to_all_song_mode)
         self.screen.add_button(title="play_list", row=0, 
                 column=4, column_span=4)
+    
+        # the button to change to  setting mode
+        self.screen.add_button(title="setting", row=0,
+                column=8, column_span=2, command=self._change_to_setting_mode)
 
+        # the button to exit system
         self.screen.add_button(title="quit",row=0,
-                column=8, column_span=2, command=self._exit_system)
+                column=10, column_span=2, command=self._exit_system)
 
         # the list of created playlist
         self.menu = self.screen.add_scroll_menu(title="PlayList", 
@@ -177,10 +182,20 @@ class PlayListScreen:
         # stop this screen
         self.screen.stop()
 
+    def _change_to_setting_mode(self):
+        """ the method which changes to setting mode """
+        
+        # change to setting mode
+        self.player.mode = "setting"
+
+        # stop this screen
+        self.screen.stop()
+
+
     def _exit_system(self):
+        """ exit this music player """
 
         self.player.is_exit = True
-
         self.screen.stop()
 
 if __name__ == "__main__":

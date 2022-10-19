@@ -16,7 +16,6 @@ class AllSongsList(MusicList):
                     or tmp_line[1] == "ogg"):
                 self.music_list.append(files[i])
 
-
 if __name__ == "__main__":
     tmp_list = AllSongsList("./materials")
     print(tmp_list.music_list)

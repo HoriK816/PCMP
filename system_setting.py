@@ -8,9 +8,11 @@ class SystemSetting:
         self.sort_order = self.sort_order_candidate[0] #default
 
     def change_search_path(self, new_path:str) -> None:
+        """ change search path of music """ 
         self.search_dir = new_path 
 
     def change_sort_order(self, new_sort_order:int):
+        """ change sort order of loaded music"""
         self.sort_order = sort_order_candidate(new_sort_order)
 
 if __name__ == "__main__":

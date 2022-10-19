@@ -20,6 +20,7 @@ class Music:
             pygame.mixer.music.play(loops=1)
         else:
             # the current music is not paused
+            pygame.mixer.music.set_volume(play_setting.play_volume)
             self._unpause()
 
     def stop(self) -> None:

@@ -10,6 +10,7 @@ from system_setting import SystemSetting
 from playlist import PlayList
 from play_title_screen import PlayTitleScreen 
 from playlist_screen import PlayListScreen
+from setting_screen import SettingScreen
 
 class MusicPlayer:
 
@@ -32,8 +33,28 @@ class MusicPlayer:
 
         self.is_exit = False
 
-        self.mode_list = ["all_song","play_list"]
+        self.mode_list = ["all_song","play_list","setting"]
         self.mode = "all_song" 
+
+    def main(self):
+        #create object
+        player = MusicPlayer()
+
+        while True:
+            if player.is_exit:
+                sys.exit()
+            else:
+                # set play_screen to match play mode
+                if player.mode == "all_song": 
+                    play_screen = PlayTitleScreen(player)
+                elif player.mode == "playlist":
+                    play_screen = PlayListScreen(player)
+                elif player.mode ==  "setting":
+                    play_screen = SettingScreen(player)
+                
+                # start
+                play_screen.screen.start()
+
 
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
@@ -115,12 +136,18 @@ class MusicPlayer:
 
     def volume_control(self,direction:bool) -> None:
         """ change volume """ 
-        
+
+        is_stop = False
+       
+        if (self.play_info is not None):
+            self.play_info.stop()
+            is_stop = True
+
         current_volume = self.play_setting.play_volume 
 
         # when the direction is true, turn the volume up
         if(direction): 
-            new_volume = current_volume + 0.2
+            new_volume = current_volume * 10
 
             if(new_volume <= 1.0): # max is 1.0
                 new_volume = round(new_volume,1)
@@ -130,13 +157,16 @@ class MusicPlayer:
 
         # when the direction is false, turn the volume down
         else: 
-            new_volume = current_volume - 0.2
+            new_volume = current_volume / 10
 
-            if(new_volume >= 0.0): # min is 0.0
+            if(new_volume > 0.0): # min is 0.0
                 new_volume = round(new_volume,1)
                 self.play_setting.change_volume(new_volume)
             else:
                 self.play_setting.change_volume(0.0)
+
+        if is_stop: 
+            self.play_info.play(self.play_setting)
 
     def change_dir(self,new_path:str) -> None:
         """ change the path of music directory """
@@ -167,22 +197,7 @@ class MusicPlayer:
                 return i, Music("materials/"+title)
  
 if __name__ == "__main__":
-   
-    #create object
-    player = MusicPlayer()
-
-
-    while True:
-        if player.is_exit:
-            sys.exit()
-        else:
-            if player.mode == "all_song": 
-                play_screen = PlayTitleScreen(player)
-            elif player.mode == "playlist":
-                play_screen = PlayListScreen(player)
-            
-            # start
-            play_screen.screen.start()
-
+    music_player = MusicPlayer()
+    music_player.main()
 
 
