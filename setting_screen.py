@@ -71,15 +71,20 @@ class SettingScreen:
         """ reflect new path to system's search path """
 
         # set new path
-        self.setting.search_path = new_path
+        #self.setting.search_path = new_path
+        self.setting.change_search_path(new_path)
+
         # reload
         self._update_setting_list()
+        
+
 
     def _reflect_sort_order(self, new_order):
         """ reflect new sort order to system's sort order """
 
         # set new sort order
-        self.setting.sort_order = new_order
+        #self.setting.sort_order = new_order
+        self.setting.change_sort_order(new_order)
         # reload
         self._update_setting_list()
     
