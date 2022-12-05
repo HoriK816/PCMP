@@ -13,7 +13,7 @@ class MusicList:
         if(index != 0):
             ret_music_name = self.music_list[index-1] 
             new_index -= 1
-        else:#last
+        else:#to last
             ret_music_name = self.music_list[len(self.music_list)-1]
             new_index = len(self.music_list)-1
         return new_index, Music(ret_music_name) 

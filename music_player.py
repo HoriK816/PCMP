@@ -59,11 +59,12 @@ class MusicPlayer:
     def play_title(self,title:str) -> None :
         """ play the music that the name was given """
 
-        # At the first time, player be sure to lead music.
+        # At the first time, player be sure to load music.
         # if the music had already loaded, player don't load again 
         if (self.play_info == None):
             # load music which user selected
             self.play_index, self.play_info = self._get_selected_music(title)
+
         
         elif(self.play_info.file_name != ("materials/"+title)): 
             # load music which user selected
@@ -104,7 +105,9 @@ class MusicPlayer:
         """ skip to next song or previous song on playlist """
 
         # stop current song
-        self.play_info.stop()
+        is_busy = pygame.mixer.get_busy()
+        if is_busy:
+            self.play_info.stop()
 
         # get the target playlist
         target_list = self.all_playlist[playlist_index]
@@ -113,26 +116,49 @@ class MusicPlayer:
         if(direction):
 
             # get the information about next song
-            ret_val = target_list.skip_song_to_next(self.play_index)
-            self.play_index = ret_val[0]
+            ret_val = target_list.skip_song_to_next(self.play_index_on_list)
+            self.play_index_on_list = ret_val[0]
             self.play_info = ret_val[1]
+
+            print(ret_val[0])
+            print(ret_val[1].file_name)
             
         else:
 
             # get the information about previous song
-            ret_val = target_list.skip_song_to_previous(self.play_index)
-            self.play_index = ret_val[0]
+            ret_val = target_list.skip_song_to_previous(self.play_index_on_list)
+            self.play_index_on_list = ret_val[0]
             self.play_info = ret_val[1]
         
         self.play_title(self.play_info.file_name)
 
+
    
     def move_five_seconds(self,direction:bool) -> None:
         """ I was going to use this method to move playing position thought..."""
+
         if(direction):
             self.play_info.move_five_seconds_to_next()
         else:
             self.play_info.move_five_seconds_to_previous() 
+
+
+    def _get_selected_music(self,title:str) -> (int,Music):
+        """ seek the title from list of songs """
+
+        for i in range(len(self.all_songs.music_list)):
+            if(title == self.all_songs.music_list[i]):
+                return i, Music("materials/"+title)
+ 
+    def change_dir(self,new_path:str) -> None:
+        """ change the path of music directory """
+
+        new_dir = input()
+        system_setting.change_search_path(new_dir)
+
+    def change_sort_method(self) -> None:
+        """ change the order of music """
+        pass            
 
     def volume_control(self,direction:bool) -> None:
         """ change volume """ 
@@ -147,7 +173,7 @@ class MusicPlayer:
 
         # when the direction is true, turn the volume up
         if(direction): 
-            new_volume = current_volume * 10
+            new_volume = current_volume + 0.2
 
             if(new_volume <= 1.0): # max is 1.0
                 new_volume = round(new_volume,1)
@@ -157,7 +183,7 @@ class MusicPlayer:
 
         # when the direction is false, turn the volume down
         else: 
-            new_volume = current_volume / 10
+            new_volume = current_volume - 0.2
 
             if(new_volume > 0.0): # min is 0.0
                 new_volume = round(new_volume,1)
@@ -168,17 +194,7 @@ class MusicPlayer:
         if is_stop: 
             self.play_info.play(self.play_setting)
 
-    def change_dir(self,new_path:str) -> None:
-        """ change the path of music directory """
-
-        new_dir = input()
-        system_setting.change_search_path(new_dir)
-
-    def change_sort_method(self) -> None:
-        """ change the order of music """
-        pass            
-
-    def load_all_playlist(self, search_dir) -> list:
+    def load_all_playlist(self, search_dir) -> None:
         """ load all music from search_dir """
 
         files = os.listdir(search_dir) 
@@ -188,14 +204,21 @@ class MusicPlayer:
                 self.all_playlist.append(PlayList(tmp_line[0]))
                 self.all_playlist[i].load_playlist(files[i])
 
+    def create_playlist(self, playlist_name:str) -> None:
+        """ create an empty playlist"""
+        
+        # create new playlist
+        new_playlist = PlayList(playlist_name)
+        # add it to the list of all playlist
+        self.all_playlist.append(new_playlist)
+        # create new file to handle the playlist 
+        with open("./playlist"+new_playlist,"w") as f:
+            f.write()
 
-    def _get_selected_music(self,title:str) -> (int,Music):
-        """ seek the title from list of songs """
+    def delete_playlist(self, playlist_name:str) -> None:
+        """ delete selected playlist"""
+        pass 
 
-        for i in range(len(self.all_songs.music_list)):
-            if(title == self.all_songs.music_list[i]):
-                return i, Music("materials/"+title)
- 
 if __name__ == "__main__":
     music_player = MusicPlayer()
     music_player.main()

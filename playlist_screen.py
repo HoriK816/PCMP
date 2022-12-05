@@ -26,10 +26,16 @@ class PlayListScreen:
         #load playlists and music
         self._update_all_song_list()
         self.content.add_item(self.menu.get())
-        self._update_play_info()
+        self._update_playlist_contents()
         self.volume_label.toggle_border()
         
     def _update_play_info(self):
+        """ reflect the title of selected song to the title bar """ 
+        if(self.content.get() != None):
+            self.play_title_label.set_title(self.content.get())
+
+
+    def _update_playlist_contents(self):
         """ show music of selected playlist """
         
         self.content.clear() 
@@ -44,6 +50,7 @@ class PlayListScreen:
         # update the title 
         if(self.content.get() != None):
             self.play_title_label.set_title(self.content.get())
+
 
     def _update_all_song_list(self):
         """ reload all playlist information """ 
@@ -69,23 +76,30 @@ class PlayListScreen:
 
     def _stop_music(self):
         """ stop music """ 
-        self.player.play_info.stop()
+        if self.player.play_info is not None:
+            self.player.play_info.stop()
 
     def _skip_to_next(self):
         """ skip to next song in current playlist """
         #get index of the selected playlist
         selected_playlist_index = self.menu.get_selected_item_index()
-        self.player.play_index = self.content.get_selected_item_index()
+        self.player.play_index_on_list = self.content.get_selected_item_index()
         #play next song
         self.player.skip_song_on_playlist(True, selected_playlist_index)
+
+        self.content.set_selected_item_index(self.player.play_index_on_list)
+        self._update_play_info()
 
     def _skip_to_previous(self):
         """ skip to previous song in current playlist """ 
         #get index of the selected playlist and the selected music
         selected_playlist_index = self.menu.get_selected_item_index()
-        self.player.play_index = self.content.get_selected_item_index()
+        self.player.play_index_on_list = self.content.get_selected_item_index()
         # play previous song
         self.player.skip_song_on_playlist(False, selected_playlist_index)
+
+        self.content.set_selected_item_index(self.player.play_index_on_list)
+        self._update_play_info()
 
     def _volume_up(self):
         """ turn the volume up """
@@ -119,7 +133,7 @@ class PlayListScreen:
         self.menu = self.screen.add_scroll_menu(title="PlayList", 
                 row=1, column=0, row_span=14, column_span=12) 
 
-        self.menu.add_key_command(10, self._update_play_info) 
+        self.menu.add_key_command(10, self._update_playlist_contents) 
 
         # the label to give information about current playlist
         self.play_title_label = self.screen.add_label(title="title",
