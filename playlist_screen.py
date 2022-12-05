@@ -19,15 +19,16 @@ class PlayListScreen:
         self.screen.set_title("Music Player")
         self.vol = music_player.play_setting.play_volume 
         self.speed = music_player.play_setting.play_speed 
-        self.mode_list = ["all_song","play_list"]
+
+        # is this necessary ???
+        #self.mode_list = ["all_song","play_list"]
 
         self._create_widgets()
 
-        #load playlists and music
+        # load playlists and music
         self._update_all_song_list()
         self.content.add_item(self.menu.get())
         self._update_playlist_contents()
-        self.volume_label.toggle_border()
         
     def _update_play_info(self):
         """ reflect the title of selected song to the title bar """ 
@@ -185,7 +186,7 @@ class PlayListScreen:
 
         # draw border line 
         self.play_title_label.toggle_border()
-
+        self.volume_label.toggle_border()
 
     def _change_to_all_song_mode(self):
         """ the method which changes to all_song mode """

@@ -5,7 +5,7 @@ class PlayList(MusicList):
     
     playlist_name : str 
 
-    def __init__(self, name):
+    def __init__(self, name:str):
         super().__init__()
         self.playlist_name = name
          

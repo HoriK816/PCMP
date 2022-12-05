@@ -53,7 +53,9 @@ class PlayTitleScreen:
         self.play_title_label = self.screen.add_label(title="title",
                 row=0, column=14, column_span=8)
         self.progress_bar = self.screen.add_slider(title="progress",
-                row=2, column=14, column_span=8, min_val=0, max_val=100)
+                row=2, column=14, column_span=8, min_val=-50, max_val=50)
+        self.progress_bar.set_bar_char("█")
+        self.progress_bar.toggle_value()
 
         # the button to make current music started
         self.start_button = self.screen.add_button(title="start",
@@ -107,7 +109,7 @@ class PlayTitleScreen:
         
         self.menu.clear()
 
-        #initialize music list
+        # initialize music list
         self.menu.add_item_list(self.player.all_songs.music_list)
 
 
