@@ -132,7 +132,6 @@ class MusicPlayer:
         
         self.play_title(self.play_info.file_name)
 
-
    
     def move_five_seconds(self,direction:bool) -> None:
         """ I was going to use this method to move playing position thought..."""
@@ -212,8 +211,8 @@ class MusicPlayer:
         # add it to the list of all playlist
         self.all_playlist.append(new_playlist)
         # create new file to handle the playlist 
-        with open("./playlist"+new_playlist,"w") as f:
-            f.write()
+        with open("./playlist/"+new_playlist.playlist_name+".csv","w") as f:
+            f.write("")
 
     def delete_playlist(self, playlist_name:str) -> None:
         """ delete selected playlist"""

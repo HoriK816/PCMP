@@ -97,7 +97,8 @@ class EditPlayListScreen:
         # the button to create new playlist
         self.create_list_button = self.screen.add_button(
                 title="Create New PlayList",
-                row=2,column=0,row_span=1,column_span=5)
+                row=2,column=0,row_span=1,column_span=5,
+                command=self._create_empty_playlist)
 
         # the button to delete selected playlist
         self.delete_list_button = self.screen.add_button(
@@ -164,11 +165,26 @@ class EditPlayListScreen:
         self.selected_music_label_for_elements_menu.toggle_border()
         self.selected_music_label_for_all_songs_menu.toggle_border()
 
+    def _create_empty_playlist(self):
+        #self.player.create_playlist()
+        
+        self.screen.show_text_box_popup(
+                title="input new playlist name",
+                command=self._reflect_to_playlist,
+                initial_text="") 
+
+    def _reflect_to_playlist(self,text:str):
+        #consider the method name !!!!!
+
+        self.player.create_playlist(text)
+        self._update_all_playlists()
+
     def _exit_system(self):
         """ exit this music player""" 
 
         self.player.is_exit = True
         self.screen.stop()
+
 
 if __name__ == "__main__":
     
