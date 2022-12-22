@@ -2,6 +2,7 @@ import pygame
 import os
 import sys
 import time 
+import asyncio
 from music import Music
 from play_setting import PlaySetting
 from music_list import MusicList
@@ -72,6 +73,12 @@ class MusicPlayer:
                      
         # play music
         self.play_info.play(self.play_setting)  
+
+    async def auto_skip_on_playlist(playlist_index:int):
+        # this method has not tested yet. 
+        if not(pygame.mixer.get_busy()):
+            self.skip_song_on_playlist(True, playlist_index)
+        await asyncio.sleep(1)
 
 
     def skip_song(self,direction:bool) -> None:

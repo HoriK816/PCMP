@@ -1,6 +1,7 @@
 import pygame
 import os
 import time 
+import asyncio
 import py_cui
 from music import Music
 from play_setting import PlaySetting
@@ -70,10 +71,14 @@ class PlayListScreen:
         """ start music """
         play_title = self.content.get()
         self.player.play_title(play_title)
+    
+        '''
+        these code have not tested yet. 
 
-
-        # I must find the way to play music without play_playlist method
-        #self.player.play_playlist(self.menu.get())
+        seleceted_playlist_index = self.menu.get_selected_item_index()
+        auto_play = player.auto_skip_on_playlist(selected_playlist_index)  
+        asyncio.run(auto_play)
+        '''
 
     def _stop_music(self):
         """ stop music """ 

@@ -113,7 +113,7 @@ class EditPlayListScreen:
         # the button to delete selected music
         self.delete_music_button = self.screen.add_button(
                 title="Delete the music",row=2,column=10,row_span=1,
-                column_span=10)
+                column_span=10,command=self._delete_music_from_playlist)
     
         # the label to give information about current music
         self.selected_music_label_for_elements_menu = self.screen.add_label(
@@ -141,7 +141,7 @@ class EditPlayListScreen:
 
         self.add_music_button = self.screen.add_button(
                 title="<<- add music",row=2,column=20,row_span=1,
-                column_span=10)
+                column_span=10,command=self._add_music_to_playlist)
 
         # the list of all songs
         self.all_songs_menu = self.screen.add_scroll_menu(title="All Songs",
@@ -178,6 +178,25 @@ class EditPlayListScreen:
 
         self.player.create_playlist(text)
         self._update_all_playlists()
+
+    def _add_music_to_playlist(self):
+        """ add music to playlist from all_songs """
+        selected_title = self.all_songs_menu.get()
+        selected_list = self.player.all_playlist[
+                self.list_menu.get_selected_item_index()]
+        selected_list.music_list.append(selected_title)
+        self._update_playlist_contents()
+
+    def _delete_music_from_playlist(self):
+
+        selected_title_index = self.elements_menu.get_selected_item_index()
+        selected_list = self.player.all_playlist[
+                self.list_menu.get_selected_item_index()]
+
+        if (len(selected_list.music_list) != 0):
+            del selected_list.music_list[selected_title_index]
+            self._update_playlist_contents()
+
 
     def _exit_system(self):
         """ exit this music player""" 
