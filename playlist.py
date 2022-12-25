@@ -16,6 +16,18 @@ class PlayList(MusicList):
             for line in f:
                 self.music_list.append(line.split(",")[0])
 
+    def rewrite_playlist_file(self):
+        """ reflect elements of the playlist to the source file """
+
+        rewrite_value = []
+
+        for i in range(len(self.music_list)):
+            rewrite_value.append(self.music_list[i] + ",\n")
+
+        with open("playlist/"+file_name,"w") as f:
+            f.writelines(rewrite_value)
+
+
     def edit_playList(self, name:str, ope:str, title:str) -> None:
         pass
 
