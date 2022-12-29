@@ -135,9 +135,13 @@ class PlayListScreen:
         self.screen.add_button(title="quit",row=0,
                 column=10, column_span=2, command=self._exit_system)
 
+        # the button to edit playlists
+        self.screen.add_button(title="edit_playlist",row=14,
+                column=0, column_span=12, command=self._change_to_edit_playlist_mode)
+
         # the list of created playlist
         self.menu = self.screen.add_scroll_menu(title="PlayList", 
-                row=1, column=0, row_span=14, column_span=12) 
+                row=1 ,column=0, row_span=13, column_span=12) 
 
         self.menu.add_key_command(10, self._update_playlist_contents) 
 
@@ -211,6 +215,14 @@ class PlayListScreen:
         # stop this screen
         self.screen.stop()
 
+    def _change_to_edit_playlist_mode(self):
+        """ the method which changes to edit playlists mode """
+
+        # change to edit mode 
+        self.player.mode = "edit_playlist"
+
+        # stop this screen
+        self.screen.stop()
 
     def _exit_system(self):
         """ exit this music player """

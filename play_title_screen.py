@@ -38,7 +38,7 @@ class PlayTitleScreen:
         # the button to setting mode
         self.screen.add_button(title="setting", row=0,
                 column=8, column_span=2, command=self._change_to_setting_mode)
-
+        
         # the button to exit system
         self.screen.add_button(title="quit",row=0,
                 column=10, column_span=2, command=self._exit_system)
@@ -175,7 +175,6 @@ class PlayTitleScreen:
 
         # stop this screen
         self.screen.stop()
-
 
     def _exit_system(self):
         """ exit this music player """ 

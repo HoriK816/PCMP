@@ -1,5 +1,4 @@
 import py_cui
-from music_player import MusicPlayer
 
 class EditPlayListScreen:
 

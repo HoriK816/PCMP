@@ -12,6 +12,7 @@ from playlist import PlayList
 from play_title_screen import PlayTitleScreen 
 from playlist_screen import PlayListScreen
 from setting_screen import SettingScreen
+from edit_playlist_screen import EditPlayListScreen
 
 class MusicPlayer:
 
@@ -52,6 +53,8 @@ class MusicPlayer:
                     play_screen = PlayListScreen(player)
                 elif player.mode ==  "setting":
                     play_screen = SettingScreen(player)
+                elif player.mode == "edit_playlist":
+                    play_screen = EditPlayListScreen(player)
                 
                 # start
                 play_screen.screen.start()
