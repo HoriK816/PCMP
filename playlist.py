@@ -28,9 +28,6 @@ class PlayList(MusicList):
             f.writelines(rewrite_value)
 
 
-    def edit_playList(self, name:str, ope:str, title:str) -> None:
-        pass
-
 if __name__ == "__main__":
     tmp_playlist = PlayList("test_list") 
     tmp_playlist.load_playlist("test_list.csv")

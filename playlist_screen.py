@@ -9,7 +9,7 @@ from music_list import MusicList
 from all_songs_list import AllSongsList 
 from system_setting import SystemSetting
 from playlist import PlayList
-#from music_player import MusicPlayer
+from background_checker import BackgroundChecker
 
 
 class PlayListScreen:
@@ -31,7 +31,10 @@ class PlayListScreen:
         self.content.add_item(self.menu.get())
         self._update_playlist_contents()
         
-    def _update_play_info(self):
+        # check the state of mixer  
+        self.checker = None 
+
+    def update_play_info(self):
         """ reflect the title of selected song to the title bar """ 
         if(self.content.get() != None):
             self.play_title_label.set_title(self.content.get())
@@ -49,6 +52,9 @@ class PlayListScreen:
         self.content.add_item_list(self.player.
                 all_playlist[playlist_index].music_list)
     
+        # reset play index to zero 
+        self.player.reset_play_index_on_list() 
+
         # update the title 
         if(self.content.get() != None):
             self.play_title_label.set_title(self.content.get())
@@ -71,19 +77,19 @@ class PlayListScreen:
         """ start music """
         play_title = self.content.get()
         self.player.play_title(play_title)
-    
-        '''
-        these code have not tested yet. 
-
-        seleceted_playlist_index = self.menu.get_selected_item_index()
-        auto_play = player.auto_skip_on_playlist(selected_playlist_index)  
-        asyncio.run(auto_play)
-        '''
+        
+        selected_playlist_index = self.menu.get_selected_item_index()
+        self.checker = BackgroundChecker(self.player, self,
+                selected_playlist_index, True)
+        self.checker.start()
 
     def _stop_music(self):
         """ stop music """ 
         if self.player.play_info is not None:
             self.player.play_info.stop()
+
+        self.checker.change_state(False)
+        self.checker.join()
 
     def _skip_to_next(self):
         """ skip to next song in current playlist """
@@ -94,18 +100,19 @@ class PlayListScreen:
         self.player.skip_song_on_playlist(True, selected_playlist_index)
 
         self.content.set_selected_item_index(self.player.play_index_on_list)
-        self._update_play_info()
+        self.update_play_info()
 
     def _skip_to_previous(self):
         """ skip to previous song in current playlist """ 
         #get index of the selected playlist and the selected music
         selected_playlist_index = self.menu.get_selected_item_index()
         self.player.play_index_on_list = self.content.get_selected_item_index()
+
         # play previous song
         self.player.skip_song_on_playlist(False, selected_playlist_index)
 
         self.content.set_selected_item_index(self.player.play_index_on_list)
-        self._update_play_info()
+        self.update_play_info()
 
     def _volume_up(self):
         """ turn the volume up """
@@ -158,16 +165,6 @@ class PlayListScreen:
         # the button to make current music stopped
         self.stop_button = self.screen.add_button(title="stop",
                 row=4, column=18,column_span=2, command=self._stop_music)
-
-        '''
-        unimplemented
-
-        self.move_previous_button = self.screen.add_button(title="<- 5sec",
-            row=4, column=14,column_span=2)
-
-        self.move_next_button = self.screen.add_button(title="5sec ->",
-            row=4, column=20,column_span=2)
-        '''
         
         # the button to skip to next song
         self.skip_next_button = self.screen.add_button("skip->", row=4,

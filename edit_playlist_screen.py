@@ -85,9 +85,9 @@ class EditPlayListScreen:
         
         # tabs to select play mode
         self.screen.add_button(title="all_song", row=0,
-                column=0, column_span=4)
+                column=0, column_span=4, command=self._change_to_all_song_mode)
         self.screen.add_button(title="play_list", row=0,
-                column=4, column_span=4)
+                column=4, column_span=4, command=self._change_to_playlist_mode)
 
         # the button to exit system
         self.screen.add_button(title="quit", row=0,
@@ -184,7 +184,46 @@ class EditPlayListScreen:
         selected_list = self.player.all_playlist[
                 self.list_menu.get_selected_item_index()]
         selected_list.music_list.append(selected_title)
+
         self._update_playlist_contents()
+
+        # write back to the source file
+        tmp_list = []
+        for i in range(len(selected_list.music_list)):
+            tmp_list.append(selected_list.music_list[i]+",\n")
+
+        with open("./playlist/"+selected_list.playlist_name+".csv","w") as f:
+            f.writelines(tmp_list)
+
+
+    def _change_to_all_song_mode(self):
+        """ the method which changes to all_song mode """
+
+        # change to all_song mode
+        self.player.mode = "all_song"
+
+        # stop this screen
+        self.screen.stop()
+
+
+    def _change_to_setting_mode(self):
+        """ the method which changes to setting mode """
+        
+        # change to setting mode
+        self.player.mode = "setting"
+
+        # stop this screen
+        self.screen.stop()
+
+
+    def _change_to_playlist_mode(self):
+        """ the method which changes to playlist mode """
+        
+        # change to playlist mode
+        self.player.mode = "playlist" 
+
+        # stop this screen
+        self.screen.stop()
 
     def _delete_music_from_playlist(self):
 
@@ -195,6 +234,14 @@ class EditPlayListScreen:
         if (len(selected_list.music_list) != 0):
             del selected_list.music_list[selected_title_index]
             self._update_playlist_contents()
+
+        # write back to the source file
+        tmp_list = []
+        for i in range(len(selected_list.music_list)):
+            tmp_list.append(selected_list.music_list[i]+",\n")
+
+        with open("./playlist/"+selected_list.playlist_name+".csv","w") as f:
+            f.writelines(tmp_list)
 
 
     def _exit_system(self):

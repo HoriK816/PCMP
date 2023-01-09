@@ -32,6 +32,8 @@ class MusicPlayer:
         #information about the song
         self.play_info = None
         self.play_index = 0
+        
+        self.play_index_on_list = 0
 
         self.is_exit = False
 
@@ -77,12 +79,6 @@ class MusicPlayer:
         # play music
         self.play_info.play(self.play_setting)  
 
-    async def auto_skip_on_playlist(playlist_index:int):
-        # this method has not tested yet. 
-        if not(pygame.mixer.get_busy()):
-            self.skip_song_on_playlist(True, playlist_index)
-        await asyncio.sleep(1)
-
 
     def skip_song(self,direction:bool) -> None:
         """ skip to next song or previous song """ 
@@ -111,7 +107,7 @@ class MusicPlayer:
         # start next song
         self.play_title(self.play_info.file_name)
 
-    def skip_song_on_playlist(self,direction:bool,playlist_index:int) -> None:
+    def skip_song_on_playlist(self,direction:bool, playlist_index:int) -> None:
         """ skip to next song or previous song on playlist """
 
         # stop current song
@@ -142,14 +138,9 @@ class MusicPlayer:
         
         self.play_title(self.play_info.file_name)
 
-   
-    def move_five_seconds(self,direction:bool) -> None:
-        """ I was going to use this method to move playing position thought..."""
-
-        if(direction):
-            self.play_info.move_five_seconds_to_next()
-        else:
-            self.play_info.move_five_seconds_to_previous() 
+    def reset_play_index_on_list(self):
+        """ reset play index """
+        self.play_index_on_list = 0
 
 
     def _get_selected_music(self,title:str) -> (int,Music):
