@@ -1,4 +1,4 @@
-#Abstract 
+# Abstract 
  It is a music player that can be used on the terminal written in python.
 There are three functions.
 1.Title playback 
@@ -7,7 +7,7 @@ There are three functions.
  In this software, I used pygame to playback music and py_cui to draw 
 CLI screens.
 
-##Title playback
+## Title playback
  ![title_playback_screen](../screenshots/music_player1.png)
  You must include music files to play in "materials". 
  At the startup of this software, you see the title playback screen displayed 
@@ -16,7 +16,7 @@ by default. You can pick the title you want to play from the “All Songs” men
 press the “Stop” button, the music will stop. If you press the “<-skip” or 
 the “skip ->”, the next or previous music will play.
 
-##Playlist playback
+## Playlist playback
  ![playlist_screen](../screenshots/music_player2.png)
  You can playback a created playlist.
  You can create playlists on the edit playlist screen. If you push 
@@ -25,7 +25,7 @@ the “skip ->”, the next or previous music will play.
 you push the “Start” button, the selected playlist will be played. If you press
 the “Stop” button, the playlist will stop. 
 
-##Playlist editing
+## Playlist editing
  ![playlist_screen](../screenshots/music_player2.png)
  You can create, edit and delete playlists.
  You can move to this screen by pushing the "edit_plyalist" button on the 
