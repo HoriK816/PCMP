@@ -1,4 +1,5 @@
 import py_cui
+import os
 
 class EditPlayListScreen:
 
@@ -97,12 +98,13 @@ class EditPlayListScreen:
         self.create_list_button = self.screen.add_button(
                 title="Create New PlayList",
                 row=2,column=0,row_span=1,column_span=5,
-                command=self._create_empty_playlist)
+                command=self._create_empty_playlist_popup)
 
         # the button to delete selected playlist
         self.delete_list_button = self.screen.add_button(
                 title="Delete the PlayList",
-                row=2,column=5,row_span=1,column_span=5)
+                row=2,column=5,row_span=1,column_span=5,
+                command=self._delete_selected_playlist_popup)
         
         # the label to give information about current playlist
         self.selected_playlist_label = self.screen.add_label(
@@ -164,19 +166,46 @@ class EditPlayListScreen:
         self.selected_music_label_for_elements_menu.toggle_border()
         self.selected_music_label_for_all_songs_menu.toggle_border()
 
-    def _create_empty_playlist(self):
+    def _create_empty_playlist_popup(self):
         #self.player.create_playlist()
         
         self.screen.show_text_box_popup(
                 title="input new playlist name",
-                command=self._reflect_to_playlist,
+                command=self._create_empty_playlist,
                 initial_text="") 
 
-    def _reflect_to_playlist(self,text:str):
-        #consider the method name !!!!!
-
+    def _create_empty_playlist(self,text:str):
+        
         self.player.create_playlist(text)
         self._update_all_playlists()
+
+    def _delete_selected_playlist_popup(self):
+        selected_list = self.player.all_playlist[
+                self.list_menu.get_selected_item_index()]
+        message = "Do you want to delete " + selected_list.playlist_name \
+                    + " ?"
+        self.screen.show_yes_no_popup(message,
+                command=self._delete_selected_playlist)
+
+
+    def _delete_selected_playlist(self, to_delete):
+
+        if to_delete:
+            selected_list = self.player.all_playlist[
+                    self.list_menu.get_selected_item_index()]
+
+            for i in range(len(self.player.all_playlist)):
+                tmp_playlist_name = self.player.all_playlist[i].playlist_name
+
+                if tmp_playlist_name == selected_list.playlist_name:
+                    path = "./playlist/" + str(tmp_playlist_name) + ".csv"
+                    os.remove(path) 
+                    break
+
+            self._update_all_playlists()
+        else:
+            pass
+
 
     def _add_music_to_playlist(self):
         """ add music to playlist from all_songs """
