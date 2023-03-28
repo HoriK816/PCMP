@@ -45,7 +45,7 @@ the playlist.
 You can use it with this command.
 
 ## Current situation 
- I have started this project to make a music that I can use intuitively on a terminal.
+ I have started this project to make a music player that I can use intuitively on a terminal.
 However, my motivation rapidly declined because I found that I can work more effectively
 in silence with no sound.
  Now, my development is very slow. So, I decided to make this software public.
