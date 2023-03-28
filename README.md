@@ -41,7 +41,7 @@ right side and push the “add music” button, the selected music will be added
 the playlist.
 
 ## Exection
-<b>$python music_player.py</b>
+<b>$python music_player.py</b><br>
 You can use it with this command.
 
 ## Current situation 
