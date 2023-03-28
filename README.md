@@ -1,4 +1,6 @@
-# Abstract 
+# PCMP : Python-console-music-player
+
+## Abstract 
  It is a music player that can be used on the terminal written in python.
 There are three functions.
 1.Title playback 
@@ -37,4 +39,23 @@ menu in the middle. Push the "delete the music" button to delete the selected
 music from the playlist. If you pick a title from the “All Songs” menu on the 
 right side and push the “add music” button, the selected music will be added to 
 the playlist.
+
+## Exection
+<b>$python music_player.py</b>
+You can use it with this command.
+
+## Current situation 
+ I have started this project to make a music that I can use intuitively on a terminal.
+However, my motivation rapidly declined because I found that I can work more effectively
+in silence with no sound.
+ Now, my development is very slow. So, I decided to make this software public.
+
+### Problems
+* There is no script to set up this software
+* This software can't sort music files
+* This software loads files from only the specified directory ("materials")
+* A progress bar doesn't work. It's just decorations.
+
+I'll gradually solve these problems in the future ...
+
 
