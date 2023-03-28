@@ -66,7 +66,7 @@ class MusicPlayer:
         """ play the music that the name was given """
 
         # At the first time, player be sure to load music.
-        # if the music had already loaded, player don't load again 
+        # if the music had already loaded, player doesn't load again 
         if (self.play_info == None):
             # load music which user selected
             self.play_index, self.play_info = self._get_selected_music(title)
@@ -125,9 +125,6 @@ class MusicPlayer:
             ret_val = target_list.skip_song_to_next(self.play_index_on_list)
             self.play_index_on_list = ret_val[0]
             self.play_info = ret_val[1]
-
-            print(ret_val[0])
-            print(ret_val[1].file_name)
             
         else:
 

@@ -3,6 +3,7 @@ import os
 import time 
 import asyncio
 import py_cui
+import threading
 from music import Music
 from play_setting import PlaySetting
 from music_list import MusicList
@@ -21,9 +22,6 @@ class PlayListScreen:
         self.vol = music_player.play_setting.play_volume 
         self.speed = music_player.play_setting.play_speed 
 
-        # is this necessary ???
-        #self.mode_list = ["all_song","play_list"]
-
         self._create_widgets()
 
         # load playlists and music
@@ -34,10 +32,15 @@ class PlayListScreen:
         # check the state of mixer  
         self.checker = None 
 
-    def update_play_info(self):
+    def _update_play_info(self):
         """ reflect the title of selected song to the title bar """ 
         if(self.content.get() != None):
             self.play_title_label.set_title(self.content.get())
+
+    def update_play_info_from_checker(self):
+        #for test
+        self.content.set_selected_item_index(2)
+        #self._update_play_info()
 
 
     def _update_playlist_contents(self):
@@ -79,6 +82,10 @@ class PlayListScreen:
         self.player.play_title(play_title)
         
         selected_playlist_index = self.menu.get_selected_item_index()
+
+        if (len(threading.enumerate()) >= 2):
+            self.checker.change_state(False)
+            self.checker.join()
         self.checker = BackgroundChecker(self.player, self,
                 selected_playlist_index, True)
         self.checker.start()
@@ -87,9 +94,10 @@ class PlayListScreen:
         """ stop music """ 
         if self.player.play_info is not None:
             self.player.play_info.stop()
-
-        self.checker.change_state(False)
-        self.checker.join()
+        
+        if (len(threading.enumerate()) >= 2):
+            self.checker.change_state(False)
+            self.checker.join()
 
     def _skip_to_next(self):
         """ skip to next song in current playlist """
@@ -100,7 +108,7 @@ class PlayListScreen:
         self.player.skip_song_on_playlist(True, selected_playlist_index)
 
         self.content.set_selected_item_index(self.player.play_index_on_list)
-        self.update_play_info()
+        self._update_play_info()
 
     def _skip_to_previous(self):
         """ skip to previous song in current playlist """ 
@@ -112,7 +120,7 @@ class PlayListScreen:
         self.player.skip_song_on_playlist(False, selected_playlist_index)
 
         self.content.set_selected_item_index(self.player.play_index_on_list)
-        self.update_play_info()
+        self._update_play_info()
 
     def _volume_up(self):
         """ turn the volume up """
@@ -200,6 +208,10 @@ class PlayListScreen:
         # change to all_song mode
         self.player.mode = "all_song"
 
+        if (len(threading.enumerate()) >= 2): 
+            self.checker.change_state(False)
+            self.checker.join()
+
         # stop this screen
         self.screen.stop()
 
@@ -208,6 +220,10 @@ class PlayListScreen:
         
         # change to setting mode
         self.player.mode = "setting"
+        
+        if (len(threading.enumerate()) >= 2): 
+            self.checker.change_state(False)
+            self.checker.join()
 
         # stop this screen
         self.screen.stop()
@@ -218,12 +234,20 @@ class PlayListScreen:
         # change to edit mode 
         self.player.mode = "edit_playlist"
 
+        if (len(threading.enumerate()) >= 2): 
+            self.checker.change_state(False)
+            self.checker.join()
+
         # stop this screen
         self.screen.stop()
 
     def _exit_system(self):
         """ exit this music player """
-
+        
+        if (len(threading.enumerate()) >= 2): 
+            self.checker.change_state(False)
+            self.checker.join()
+    
         self.player.is_exit = True
         self.screen.stop()
 

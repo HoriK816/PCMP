@@ -19,14 +19,10 @@ class BackgroundChecker(threading.Thread):
         """ call skip method"""
         while self.is_active:
             if not(pygame.mixer.music.get_busy()):
+                self.screen.update_play_info_from_checker()
                 self.player.skip_song_on_playlist(True,self.playlist_index)
-                self._reflect_skip_to_screen()
-            time.sleep(0.1)
     
+            #self.screen.update_play_info_from_checker()
 
-    def _reflect_skip_to_screen(self):
-        """ reflect the result of auto_skip to screen """
-        self.screen.content.set_selected_item_index(self.player.
-                play_index_on_list)
-        self.screen.update_play_info()
+            time.sleep(0.1)
 
